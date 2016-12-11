@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.min.js"></script>
+        
+
+        <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/themes/ui-lightness/jquery-ui.css">
+        <LINK REL="stylesheet" TYPE="text/css" HREF="/css/base.css">
+    </header>
+
+    <body>
+        <!--  login dialog用div要素 -->
+        <div id="loginWindow" style="display: none;"></div>
+
+        <div id="noLoginMenu">
+            <ul class="menu">
+                <li id="loginBtn">Login</li>
+            </ul>
+        </div>
+        <div id="loginMenu" style="display: none;">
+            <ul class="menu">
+                <li><a href="/skeleton_meta.html">スケルトンメタ登録</a></li>
+                <li><a href="/skeleton_data.html">スケルトンデータ登録</a></li>
+            </ul>
+        </div>
+
+        <div id="errordiv"></div>
+
+        <script src="/script/oidc.js"></script>
+        <script src="/script/oidc_setting.js"></script>
+        <script src="/script/login.js"></script>
+        
+        
+        <script language="JavaScript">
+
+//            var auth_url = {{.AuthURL}};
+            // openid privider
+            
+            
+	    </script>
+        
+    </body>
+</html>

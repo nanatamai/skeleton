@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.min.js"></script>
+        <script src="/script/jquery.validationEngine-ja.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/script/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/script/jquery.datetimepicker.full.min.js"></script>
+        <script src="/script/jquery.columns.min.js"></script>
+        <script src="/script/jquery.jsForm.min.js"></script>
+        <script src="/script/jquery.repeater.min.js"></script>
+        
+
+        <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/themes/ui-lightness/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="/css/jquery.datetimepicker.min.css"/ >
+        <link rel="stylesheet" href="/css/validationEngine.jquery.css" type="text/css"/>
+        <link rel="stylesheet" href="/css/classic.css">
+        <link rel="stylesheet" href="/css/base.css" type="text/css"/>
+    </header>
+
+    <body>
+
+        <div><label id="newRecordBtn">新規作成</label></div>
+
+        <div id="datalist"></div>
+
+        <div id="inputForm" style="display: none;">
+            <form method="post" id="basic_form">
+                <label for="data.id" class=".confirm-message">ID：</label>
+                <input type="text" name="data.id" readonly /><br />
+                <label for="data.skeleton_id">スケルトン：</label>
+                <select name="data.skeleton_id"></select><br />
+                <label for="data.skeleton_info">スケルトンメタ名：</label>
+                <input type="text" name="data.skeleton_info" data-validation-engine="validate[required]" /><br />
+            </form>
+            <form method="post" id="json_form">
+                <label for="data.data_id">データID</label>
+                <input type="text" name="data.data_id" data-validation-engine="validate[required]" /><br />
+                <label for="data.planting_date">定植日：</label>
+                <input type="text" name="data.planting_date" data-validation-engine="validate[required]" class="datetimepicker" /><br />
+                <label for="data.cultivation_density">栽培密度：</label>
+                <input type="text" name="data.cultivation_density" data-validation-engine="validate[required,custom[number]]" /><br />
+
+            </form>
+        </div>
+
+
+        <script src="/script/oidc.js"></script>
+        <script src="/script/oidc_setting.js"></script>
+
+        <script language="JavaScript">
+
+            var api_url = "http://localhost:1234/api/skeleton_meta";
+
+            function SetColumn(json) {
+
+                $("#datalist").columns({
+                    
+                    data:json.result,
+                    schema: [
+                        {"header":"ID", "key":"id"},
+                        {"header":"スケルトン名", "key":"skeleton_name"},
+                        {"header":"スケルトンID", "key":"skeleton_id"},
+                        {"header":"スケルトンメタ名", "key":"skeleton_info"},
+
+                        {"header":"操作", 
+                         "template":'<a href="' + api_url + '/{{id}}" class="crud_read_link">詳細</a>' + " | " +
+                                    '<a href="' + api_url + '/{{id}}" class="crud_del_link">削除</a>'
+                        },
+                    ],
+                });
+            }
+
+            (function ($) {
+                // onLoad
+                $(function () {
+                    
+
+                });
+            })(jQuery);
+	    </script>
+        <script src="/script/crud.js"></script>
+    </body>
+</html> 

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
+    </header>
+
+    <body>
+        <p id="testbtn">Api server callback page</p>
+
+        <div id="errordiv"></div>
+
+        <script language="JavaScript">
+
+            (function ($) {
+                // onLoad
+                $(function () {
+
+                    // token
+                    var client_id = "{{.ClientID}}";
+                    var token = {{.Token}};
+                    var post = "error"
+
+                    // breakpoint
+                    debugger;
+
+                    // error
+                    if(!client_id || !token) {
+                        $("#errordiv").html("エラーが発生しました。ログインをやり直してください。");
+                    } else if(token.error) {
+                        $("#errordiv").html("エラーが発生しました。ログインをやり直してください。");
+                        console.error(token.error);
+                    } else {
+
+                        // stringをJS時間に変換
+                        token["expires_at"] = new Date( token.expires_string );
+                        delete token["expires_string"]; 
+
+                        // strageへ保存
+                        sessionStorage.setItem(client_id, JSON.stringify(token));
+
+                        post = token.access_token;
+                    }
+
+                    // メッセージ送信
+                    parent.postMessage(post, location.protocol + "//" + location.host);
+                });
+            })(jQuery);
+
+        </script>
+    </body>
+</html>

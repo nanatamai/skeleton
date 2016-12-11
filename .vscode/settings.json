@@ -1,0 +1,5 @@
+// 既定の設定とユーザー設定を上書きするには、このファイル内に設定を挿入します
+{
+//    "go.gopath": "${workspaceRoot}"
+//    "git.path": "https://github.com/hayori/oauth2-server-go"
+}

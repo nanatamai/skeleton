@@ -1,0 +1,15 @@
+
+
+li {
+  display: inline-block;
+}
+
+iframe {
+  height:600px;
+  width:100%;
+}
+
+th {
+  white-space: nowrap;
+  font-size: small;
+}
