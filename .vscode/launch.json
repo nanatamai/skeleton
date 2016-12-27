@@ -10,7 +10,7 @@
             "port": 2345,
             "host": "127.0.0.1",
             "program": "${workspaceRoot}",
-            "env": {"APICONF": "{\"host\": {\"host\": \"https://localhost\", \"port\": 4321}, \"oidc_client\": {\"client_id\": \"rp-skeleton\",\"secret\": \"foobar\", \"scopes\": \"openid, pdjrp-skeleton, offline\", \"redirect_url\": \"http://localhost:4321/callback.html\", \"auth_url\": \"http://localhost:1234/oidc/auth\", \"token_url\": \"http://localhost:1234/oidc/token\"}}"},
+            "env": {"APICONF2": "{\"host\": {\"host\": \"https://localhost\", \"port\": 4321}, \"oidc_client\": {\"client_id\": \"rp-skeleton\",\"secret\": \"foobar\", \"scopes\": \"openid, pdjrp-skeleton, offline\", \"redirect_url\": \"http://localhost:4321/callback.html\", \"auth_url\": \"http://localhost:1234/oidc/auth\", \"token_url\": \"http://localhost:1234/oidc/token\"}}"},
             "args": [],
             "showLog": true
         }

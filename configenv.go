@@ -38,7 +38,7 @@ func ConfigLoad() (ConfigFile, error){
 
     var conf ConfigFile
 
-    env := os.Getenv("APICONF")
+    env := os.Getenv("APICONF2")
 
     err := json.Unmarshal([]byte(env), &conf);
     if  err != nil {
