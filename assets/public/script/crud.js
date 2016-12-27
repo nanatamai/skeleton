@@ -6,9 +6,11 @@
         var $input_form = $("#inputForm");
         var $basic_form = $("#basic_form");
         var $json_form = $("#json_form");
+        var $repeater_form = $("#repeater");
         var $new_btn = $("#newRecordBtn");
         var $data_list = $("#datalist");
         var $date_picker = $(".datetimepicker");
+        var $time_picker = $(".timepicker");
         var crud_read_link = ".crud_read_link";
         var crud_edit_link = ".crud_edit_link";
         var crud_del_link = ".crud_del_link";
@@ -37,6 +39,14 @@
             focusFirstField: false,
             scroll: false
         });
+        if($repeater_form.length > 0) {
+            $repeater_form.validationEngine({
+                promptPosition: "topRight",
+                showArrowOnRadioAndCheckbox: true,
+                focusFirstField: false,
+                scroll: false
+            });
+        }
 
         // 入力フォームにjsFormを設定
         $input_form.jsForm({
@@ -45,12 +55,27 @@
         $json_form.jsForm({
             data: null,
         });
+        if($repeater_form.length > 0) {
+            $repeater_form.jsForm({
+                data: null,
+                prefix: "",
+            });
+        }
 
         // 入力フォームの日付入力
         if($date_picker.length > 0) {
             $date_picker.datetimepicker({
                 timepicker:false,
                 format:"Y/m/d",
+                lang: "ja",
+            });
+        }
+
+        if($time_picker.length > 0) {
+            $time_picker.datetimepicker({
+                datepicker:false,
+                step:60,
+                format:"H:i",
                 lang: "ja",
             });
         }
@@ -129,6 +154,10 @@
                     $json_form.jsForm("fill", JSON.parse(json_data.result.meta_data));
                 } else if ("assay_data" in json_data.result) {
                     $json_form.jsForm("fill", JSON.parse(json_data.result.assay_data));
+                }
+
+                if ("assay_array" in json_data.result) {
+                    $repeater_form.jsForm("fill", JSON.parse(json_data.result.assay_array));
                 }
                 
 
@@ -249,7 +278,7 @@
             });
         }
 
-        function CreateFormData() {
+/*        function CreateFormData() {
 
             var token = oidc.GetToken();
 
@@ -262,7 +291,7 @@
 
             return SerializeArray2PostData(basic_array);
         }
-
+*/
         function UserApiUrl(apiurl) {
 
             return (apiurl + "/user/" + oidc.GetTokenUserID());

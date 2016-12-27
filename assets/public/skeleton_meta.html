@@ -60,8 +60,8 @@
                     data:json.result,
                     schema: [
                         {"header":"ID", "key":"id"},
-                        {"header":"スケルトン名", "key":"skeleton_name"},
-                        {"header":"スケルトンID", "key":"skeleton_id"},
+                        {"header":"skeleton id", "key":"skeleton_id", "hide": true},
+                        {"header":"スケルトン名(ID)", "key":"skeleton_name", "template":"{{skeleton_name}} ({{skeleton_id}})"},
                         {"header":"スケルトンメタ名", "key":"skeleton_info"},
 
                         {"header":"操作", 
@@ -70,6 +70,20 @@
                         },
                     ],
                 });
+            }
+
+            function CreateFormData() {
+
+                var token = oidc.GetToken();
+
+                var basic_array = $("#basic_form").serializeArray();
+                var json_data = ($("#json_form").serializeArray());
+
+                basic_array.push({"name":"data.meta_data","value":JSON.stringify(oidc.SerializeArray2PostData(json_data, "data."))});
+                basic_array.push({"name":"data.user_id","value":token["user_id"]});
+                basic_array.push({"name":"scope","value":"user." + token["user_id"]});
+
+                return oidc.SerializeArray2PostData(basic_array);
             }
 
             (function ($) {

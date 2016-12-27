@@ -26,7 +26,7 @@
         <div id="datalist"></div>
 
         <div id="inputForm" style="display: none;">
-            <form method="post" class="autoConfirm">
+            <form method="post"  id="basic_form">
                 <label for="data.id" class=".confirm-message">ID：</label>
                 <input type="text" name="data.id" readonly /><br />
 
@@ -35,7 +35,17 @@
 
                 <label for="data.assay_date">計測日：</label>
                 <input type="text" name="data.assay_date" data-validation-engine="validate[required]" class="datetimepicker" /><br />
+            </form>
 
+            <form id="json_form">
+                <label for="data.assay_time">計測時間：</label>
+                <input type="text" name="data.assay_time" data-validation-engine="validate[required]" class="timepicker" /><br />
+                <label for="data.measurer">測定者：</label>
+                <input type="text" name="data.measurer" data-validation-engine="validate[required]" /><br />
+                <label for="data.coefficient">換算係数：</label>
+                <input type="text" name="data.coefficient" data-validation-engine="validate[required,custom[number]]" /><br />
+                <label for="data.comment">コメント：</label>
+                <input type="text" name="data.comment" data-validation-engine="validate[required]" /><br />
             </form>
 
             <form id="repeater">
@@ -80,17 +90,18 @@
                         <th></th>
                     </tr>
                     <tr data-repeater-item>
-                        <td><input type="text" name="text-input" size="6" data-validation-engine="validate[required,custom[number]]" /></td>
-                        <td><input type="text" name="text-input" size="6" data-validation-engine="validate[required,custom[number]]" /></td>
-                        <td><input type="text" name="text-input" size="6" data-validation-engine="validate[required,custom[number]]" /></td>
-                        <td><input type="text" name="text-input" size="6" data-validation-engine="validate[required,custom[number]]" /></td>
-                        <td><input type="text" name="text-input" size="6" data-validation-engine="validate[required,min[0]]" /></td>
-                        <td><input type="text" name="text-input" size="6" data-validation-engine="validate[required,min[0]]" /></td>
-                        <td><input type="text" name="text-input" size="6" data-validation-engine="validate[required,min[0]]" /></td>
-                        <td><input type="text" name="text-input" size="6" data-validation-engine="validate[required,min[0]]" /></td>
-                        <td><input type="text" name="text-input" size="6" data-validation-engine="validate[required,min[0]]" /></td>
-                        <td><input type="text" name="text-input" size="6" data-validation-engine="validate[required,min[0]]" /></td>
-                        <td><input type="text" name="text-input" size="6" data-validation-engine="validate[required,min[0]]" /></td>
+                        <td><input type="text" name="stemElongation" size="6" data-validation-engine="validate[required,min[0],custom[number]]" /></td>
+                        <td><input type="text" name="stemCircumference" size="6" data-validation-engine="validate[required,min[0],custom[number]]" /></td>
+                        <td><input type="text" name="topDistance" size="6" data-validation-engine="validate[required,min[0],custom[number]]" /></td>
+                        <td><input type="text" name="topNumberLeaves" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
+                        <td><input type="text" name="numberLeaves" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
+                        <td><input type="text" name="upperLeafArea_verticalWidth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
+                        <td><input type="text" name="upperLeafArea_breadth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
+                        <td><input type="text" name="mediumLeafArea_verticalWidth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
+                        <td><input type="text" name="mediumLeafArea_breadth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
+                        <td><input type="text" name="lowerLeafArea_verticalWidth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
+                        <td><input type="text" name="lowerLeafArea_breadth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
+                        
                         <td>
                             <select name="growingCondition">
                                 <option value="1">1</option>
@@ -113,7 +124,7 @@
 
         <script language="JavaScript">
 
-            var api_url = "/api/skeleton_data";
+            var api_url = "http://localhost:1234/api/skeleton_data";
 
             function SetColumn(json) {
 
@@ -122,8 +133,10 @@
                     data:json.result,
                     schema: [
                         {"header":"ID", "key":"id"},
-                        {"header":"スケルトン名(ID)", "template":"{{skeleton_name}} ({{skeleton_id}})"},
-                        {"header":"スケルトンメタ(ID)", "template":"{{skeleton_info}} ({{skeleton_meta_id}})"},
+                        {"header":"skeleton id", "key":"skeleton_id", "hide": true},
+                        {"header":"スケルトン名(ID)", "key":"skeleton_name", "template":"{{skeleton_name}} ({{skeleton_id}})"},
+                        {"header":"skeleton meta id", "key":"skeleton_meta_id", "hide": true},
+                        {"header":"スケルトンメタ(ID)", "key":"skeleton_info", "template":"{{skeleton_info}} ({{skeleton_meta_id}})"},
                         {"header":"日付", "key":"assay_date"},
                         {"header":"操作", 
                          "template":'<a href="' + api_url + '/{{id}}" class="crud_read_link">詳細</a>' + " | " +
@@ -131,6 +144,43 @@
                         },
                     ],
                 });
+            }
+
+            function CreateFormData() {
+
+                var token = oidc.GetToken();
+
+                var basic_array = $("#basic_form").serializeArray();
+                var json_data = ($("#json_form").serializeArray());
+
+                var data_repeater = $("#repeater").repeaterVal();
+
+/*                $.each(data_repeater["group-a"], function(i, data_list) {
+
+                    // "_"は入れ子にする
+                    for (var key in data_list) {
+                        var key_split = key.split("_");
+
+                        if(key_split.length == 2) {
+
+                            if(!data_list[key_split[0]]) {
+                                data_list[key_split[0]] = {};
+                            }
+
+                            data_list[key_split[0]][key_split[1]] = data_list[key];
+                        }
+                    }
+                });
+*/
+                // 計測値格納用配列を追加
+                json_data.push({"name": "assay_array", "value": data_repeater["group-a"]});
+                json_data.push({"name": "number_unit", "value": "cm"});
+
+
+                basic_array.push({"name":"data.assay_data","value":JSON.stringify(oidc.SerializeArray2PostData(json_data, "data."))});
+                basic_array.push({"name":"scope","value":"user." + token["user_id"]});
+
+                return oidc.SerializeArray2PostData(basic_array);
             }
 
             (function ($) {

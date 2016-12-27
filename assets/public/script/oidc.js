@@ -159,6 +159,8 @@ OidcController.prototype = {
     },
     GetApiJson:  function(url, data_func) {
 
+        var this_func = this;
+
         // Access Token check
         if(!this.AccessTokenCheck()) {
             return
@@ -191,7 +193,8 @@ OidcController.prototype = {
         })
         .fail(function( jqXHR, textStatus, errorThrown ) {
             // 通信が失敗したときの処理
-            $("#login_error").html("エラーが発生しました。ステータス：" + jqXHR.status);
+            this_func.ResultDialog("", "通信エラーが発生しました：" + textStatus + " " + textStatus);
+//            $("#login_error").html("エラーが発生しました。ステータス：" + jqXHR.status);
             console.log("private file error : " + jqXHR.status + " " + textStatus);
 
         })
@@ -346,6 +349,26 @@ OidcController.prototype = {
         }
 
         return token["user_id"];
+    },
+
+    SerializeArray2PostData: function(serializeArray, prefix) {
+
+        var postdata = {};
+        var name = '';
+        var val = '';
+
+        for (var key in serializeArray) {
+            name 	= serializeArray[key]['name'];
+            val 	= serializeArray[key]['value'];
+
+            if(prefix) {
+                postdata[name.replace(prefix, "")] =  val;
+            } else {
+                postdata[name] =  val;
+            }
+        }
+
+        return postdata;
     },
 
 };
