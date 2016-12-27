@@ -24,3 +24,6 @@ debug
 *.exe
 *.test
 *.prof
+
+assets.go
+
