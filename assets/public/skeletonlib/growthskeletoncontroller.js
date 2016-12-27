@@ -131,7 +131,7 @@ GrowthSkeletonController.prototype = {
         $.getJSON(marge_option.configFile, function(data){
             marge_option.config = data;
         });
-        $.ajaxSetup({async: true});
+//        $.ajaxSetup({async: true});
 
         api_url = thisInstance.apiUrl + "/" + marge_option.data.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
 

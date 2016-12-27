@@ -23,9 +23,9 @@
   <script src="/skeletonlib/scripts/jcanvas.min.js" type="text/javascript"></script>
   <script src="/skeletonlib/scripts/jquery.qtip.min.js" type="text/javascript"></script>
   <script src="/skeletonlib/scripts/jquery.cookie.min.js" type="text/javascript"></script>
-  <script src="/skeletonlib/jquery.growthdraw.min.js" type="text/javascript"></script>
-  <script src="/skeletonlib/jquery.growthtablenote.min.js" type="text/javascript"></script>
-  <script src="/skeletonlib/growthskeletoncontroller.min.js" type="text/javascript"></script>
+  <script src="/skeletonlib/jquery.growthdraw.js" type="text/javascript"></script>
+  <script src="/skeletonlib/jquery.growthtablenote.js" type="text/javascript"></script>
+  <script src="/skeletonlib/growthskeletoncontroller.js" type="text/javascript"></script>
 
   <script src="/skeletonlib/scripts/bootstrap.min.js" type="text/javascript"></script>
   <script src="/skeletonlib/scripts/jquery.magnific-popup.min.js" type="text/javascript"></script>
@@ -54,77 +54,78 @@
         });
 
         // 生育状態の推移1
-        skeleton.set($("#history1"), {
+        skeleton.draw($("#history1"), {
           "size": { "width": 190, "height": 219 },
           "data": [
-            "20160417.json.js",
+            "3",
           ]
         });
         // 生育状態の推移2
-        skeleton.set($("#history2"), {
+        skeleton.draw($("#history2"), {
           "size": { "width": 190, "height": 219 },
           "data": [
-            "20160424.json.js",
+            "4",
           ]
         });
         // 生育状態の推移3
-        skeleton.set($("#history3"), {
+        skeleton.draw($("#history3"), {
           "size": { "width": 190, "height": 219 },
           "data": [
-            "20160501.json.js",
+            "5",
           ]
         });
          // 生育状態の推移4
-        skeleton.set($("#history4"), {
+        skeleton.draw($("#history4"), {
           "size": { "width": 190, "height": 219 },
           "data": [
-            "20160508.json.js",
+            "6",
           ]
         });
         // 理想個体
-        skeleton.set($("#ideal"), {
+        skeleton.draw($("#ideal"), {
           "title": "理想個体",
           "size": { "width": 190, "height": 219 },
           "data": [
-            "ideal-20160508.json.js",
+            "7", "8",
           ]
         });
 
         // 先週との比較
-        skeleton.set($("#lastweek"), {
+        skeleton.draw($("#lastweek"), {
           "titleAppend": "先週の生育状態との比較",
           "data": [
-            "20160508.json.js"
+            "6"
           ],
           "overlay": [
-            "20160501.json.js"
+            "5"
           ]
         });
         // これまでとの比較
-        skeleton.set($("#skeleton02"), {
+        skeleton.draw($("#skeleton02"), {
           "titleAppend": "これまでの生育状態との比較",
           "data": [
-            "20160508.json.js"
+            "6"
           ],
           "overlay": [
-            "20160501.json.js",
-            "20160424.json.js",
-            "20160417.json.js"
+            "5",
+            "4",
+            "3"
           ]
         });
         // 理想個体との比較
-        skeleton.set($("#skeleton03"), {
+        skeleton.draw($("#skeleton03"), {
           "titleAppend": "理想個体と比較",
           "data": [
-            "20160508.json.js"
+            "6"
           ],
           "overlay": [
-            "ideal-20160508.json.js"
+            "7",
+            "8"
           ]
         });
 
         // 描画
-        skeleton.draw();
+//        skeleton.draw();
 
       });
     })(jQuery);

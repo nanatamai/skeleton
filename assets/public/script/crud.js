@@ -114,6 +114,8 @@
             // フォームのクリア
             $input_form.jsForm("reset");
             $json_form.jsForm("reset");
+            ClearRepeaterForm();
+            $($repeater_form.find("[data-repeater-create]")).show();
 
             $input_form.dialog({
                 modal: true,
@@ -148,16 +150,41 @@
 
             oidc.GetApiJson($(this).attr("href") + "?scope=user." + oidc.GetTokenUserID(), function(json_data) {
 
+                var assay_data = {};
+
                 $input_form.jsForm("fill", json_data.result);
 
                 if ("meta_data" in json_data.result) {
                     $json_form.jsForm("fill", JSON.parse(json_data.result.meta_data));
                 } else if ("assay_data" in json_data.result) {
-                    $json_form.jsForm("fill", JSON.parse(json_data.result.assay_data));
+                    assay_data = JSON.parse(json_data.result.assay_data);
+                    $json_form.jsForm("fill", assay_data);
                 }
 
-                if ("assay_array" in json_data.result) {
-                    $repeater_form.jsForm("fill", JSON.parse(json_data.result.assay_array));
+                // データ配列処理
+                if ("assay_array" in assay_data) {
+
+                    var assay_array = assay_data.assay_array;
+
+                    // リピーターをクリア
+                    ClearRepeaterForm();
+                    $($repeater_form.find("[data-repeater-create]")).hide();
+
+                   // var clone_row = $repeater_form.find("[data-repeater-item]")[0];
+
+                    // input要素をコピー
+                    for(var i = 1; i < assay_array.length; i++) {
+                        $($repeater_form.find("[data-repeater-item]")[0]).clone().appendTo("#repeater tbody");
+                    }
+
+                    $.each($repeater_form.find("[data-repeater-item]"), function(index, input_row) {
+                       
+                        for (var key in assay_array[index]) {
+                            $(input_row).find("[name*='" + key + "']").val(assay_array[index][key]);
+                        }
+                    });
+                    
+
                 }
                 
 
@@ -315,6 +342,22 @@
             }
 
             return postdata;
+        }
+
+        // リピーター部分の削除
+        function ClearRepeaterForm() {
+
+            $.each($repeater_form.find("[data-repeater-item]"), function(i, repeater) {
+
+                if(i > 0) {
+                    $(repeater).remove();
+                } else {
+                    // inputの内容をクリア
+                    $.each($(repeater).find("input"), function(j, input) {
+                        $(input).val("");
+                    });
+                }
+            });
         }
     });
 
