@@ -5,6 +5,11 @@
     // ページ読み込み時の処理
     $(function () {
 
+        if(!oidc.AccessTokenCheck()){
+            window.location.href = "/";
+            return;
+        }
+
         // cookieをJSONとして扱う
         $.cookie.json = true;
 
@@ -149,9 +154,9 @@ GrowthSkeletonController.prototype = {
             // overlay
             if(marge_option.overlay.length > 0) {
 
-                overlay_url = thisInstance.apiUrl + "/" + marge_option.overlay.join(",") + "?scope=skeleton." + marge_option.skeleton + ".read";
+                overlay_url = thisInstance.apiUrl + "/" + marge_option.overlay.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
 
-                oidc.GetApiJson(api_url, function(overlay_json){
+                oidc.GetApiJson(overlay_url, function(overlay_json){
 
                     $.each(overlay_json["result"], function(i, val) {
 
@@ -360,6 +365,27 @@ GrowthSkeletonController.prototype = {
             this.baseData = dataJson.inquiryItems[0];
         }
     },
+    loadBaseFile: function () {
+
+        var thisInstance = this;
+
+        api_url = thisInstance.apiUrl + "/" + this.baseFile + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+
+        oidc.GetApiJson(api_url, function(data_json){
+
+            $.each(data_json["result"], function(i, val) {
+
+                var parseData = JSON.parse(val["assay_data"]);
+
+                thisInstance.inquiryItemsArray2Hash(parseData, val);
+
+                this.baseData = parseData["assay_array"][0];
+
+                thisInstance.insertBaseData(this.baseData);
+                return false;
+            });
+        });
+    },
 /*
     // 読み込んだDataJsonの配列を連想配列に変換する
     inquiryItemsArray2Hash: function(dataJson) {
@@ -419,6 +445,8 @@ GrowthSkeletonController.prototype = {
                 }
             }
 
+            var meta_data = JSON.parse(baseJson["skeleton_meta"]["meta_data"]);
+
             dataJson["assay_array"][i] = {
                 "leafAreaCoefficient": dataJson["coefficient"],
                 "stemElongation": dataJson["assay_array"][i]["stemElongation"] * coeff,
@@ -441,10 +469,12 @@ GrowthSkeletonController.prototype = {
                 },
                 "growingCondition": dataJson["assay_array"][i]["growingCondition"],
 
-                "dataId": "",
-                "plantingDate":  "",//dataJson[i][2],
+                "dataId": meta_data["data_id"],
+                "plantingDate":  meta_data["planting_date"],//dataJson[i][2],
                 "measurementDate":  baseJson["assay_date"],
-                "cultivationDensity":  dataJson["assay_time"],
+                "cultivationDensity":  parseFloat(meta_data["cultivation_density"]),
+
+                
             };
         }
     },

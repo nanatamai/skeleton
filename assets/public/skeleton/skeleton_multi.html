@@ -45,7 +45,7 @@
         var skeleton = new GrowthSkeletonController({
             "apiUrl": "http://localhost:1234/api/skeleton_data_meta",
             "configFile": "config.json",
-            "baseFile": "single.json.js",
+            "baseFile": "6",
             "commentFile": "comment.json.js",
             "commentLinkFile": "index.html",
             "size": { "width": 270, "height": 310 },
@@ -123,6 +123,11 @@
             "8"
           ]
         });
+
+        // 基本データ
+        skeleton.loadBaseFile();
+        // コメント
+        skeleton.loadJsonpComment(0);
 
         // 描画
 //        skeleton.draw();
