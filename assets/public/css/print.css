@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.cont-out {
+  overflow-x:visible;
+}
+
+#main #SkeletonHistroy  {
+  width: auto;
+  height: auto;
+  padding: 0 30px 0 50px;
+}
