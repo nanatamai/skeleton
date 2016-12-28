@@ -162,3 +162,8 @@ th {
 .columns .ui-table-footer select  {
   color: #333;
 }
+
+.formError .formErrorContent {
+  margin-top: 5px;
+  background-color: #dd4b39;
+}
