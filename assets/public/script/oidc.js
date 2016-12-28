@@ -401,6 +401,9 @@ OidcController.prototype = {
 
             $("#noLoginMenu").toggle(!showMenu);
             $("#loginMenu").toggle(showMenu);
+            
+            // ログイン時にページ表示
+            $("#loginTopPage").trigger("click");
 
             // loginダイアログを閉じる
             $("#loginWindow").dialog("close");
