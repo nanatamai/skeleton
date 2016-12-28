@@ -62,14 +62,22 @@
             </form>
 
             <form id="json_form">
-                <label for="data.assay_time">計測時間：</label>
-                <input type="text" name="data.assay_time" data-validation-engine="validate[required]" class="timepicker" /><br />
-                <label for="data.measurer">測定者：</label>
-                <input type="text" name="data.measurer" data-validation-engine="validate[required]" /><br />
-                <label for="data.coefficient">換算係数：</label>
-                <input type="text" name="data.coefficient" data-validation-engine="validate[required,custom[number]]" /><br />
-                <label for="data.comment">コメント：</label>
-                <input type="text" name="data.comment" data-validation-engine="validate[required]" /><br />
+                <div class="form-group">
+                    <label for="data.assay_time">計測時間：</label>
+                    <input type="text" name="data.assay_time" data-validation-engine="validate[required]" class="timepicker form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="data.measurer">測定者：</label>
+                    <input type="text" name="data.measurer" data-validation-engine="validate[required]" class="form-control" placeholder="測定者" />
+                </div>
+                <div class="form-group">
+                    <label for="data.coefficient">換算係数：</label>
+                    <input type="text" name="data.coefficient" data-validation-engine="validate[required,custom[number]]" class="form-control" placeholder="換算係数" />
+                </div>
+                <div class="form-group">
+                    <label for="data.comment">コメント：</label>
+                    <input type="text" name="data.comment" data-validation-engine="validate[required]" class="form-control" placeholder="コメント" />
+                </div>
             </form>
 
             <form id="repeater">
