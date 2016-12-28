@@ -167,3 +167,12 @@ th {
   margin-top: 5px;
   background-color: #dd4b39;
 }
+
+#repeater .btn  {
+  padding: 5px 28px 5px 28px;
+  font-size: 14px;
+}
+
+#repeater .btn-primary  {
+  margin-left: 9px;
+}
