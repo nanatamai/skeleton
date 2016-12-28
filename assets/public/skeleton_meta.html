@@ -62,12 +62,18 @@
                 </div>
             </form>
             <form method="post" id="json_form">
-                <label for="data.data_id">データID</label>
-                <input type="text" name="data.data_id" data-validation-engine="validate[required]" /><br />
-                <label for="data.planting_date">定植日：</label>
-                <input type="text" name="data.planting_date" data-validation-engine="validate[required]" class="datetimepicker" /><br />
-                <label for="data.cultivation_density">栽培密度：</label>
-                <input type="text" name="data.cultivation_density" data-validation-engine="validate[required,custom[number]]" /><br />
+                <div class="form-group">
+                    <label for="data.data_id">データID：</label>
+                    <input type="text" name="data.data_id" class="form-control" placeholder="データID" data-validation-engine="validate[required]" />
+                </div>
+                <div class="form-group">
+                    <label for="data.planting_date">定植日：</label>
+                    <input type="text" name="data.planting_date" data-validation-engine="validate[required]" class="datetimepicker form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="data.cultivation_density">栽培密度：</label>
+                    <input type="text" name="data.cultivation_density" class="form-control" placeholder="栽培密度" data-validation-engine="validate[required,custom[number]]" />
+                </div>
 
             </form>
         </div>
