@@ -81,7 +81,7 @@
             </form>
 
             <form id="repeater">
-                <table data-repeater-list="group-a">
+                <table data-repeater-list="group-a" class="table">
                     <tr>
                         <th>1. 茎伸長</th>
                         <th>2. 茎径</th>
@@ -122,20 +122,20 @@
                         <th></th>
                     </tr>
                     <tr data-repeater-item>
-                        <td><input type="text" name="stemElongation" size="6" data-validation-engine="validate[required,min[0],custom[number]]" /></td>
-                        <td><input type="text" name="stemCircumference" size="6" data-validation-engine="validate[required,min[0],custom[number]]" /></td>
-                        <td><input type="text" name="topDistance" size="6" data-validation-engine="validate[required,min[0],custom[number]]" /></td>
-                        <td><input type="text" name="topNumberLeaves" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
-                        <td><input type="text" name="numberLeaves" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
-                        <td><input type="text" name="upperLeafArea_verticalWidth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
-                        <td><input type="text" name="upperLeafArea_breadth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
-                        <td><input type="text" name="mediumLeafArea_verticalWidth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
-                        <td><input type="text" name="mediumLeafArea_breadth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
-                        <td><input type="text" name="lowerLeafArea_verticalWidth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
-                        <td><input type="text" name="lowerLeafArea_breadth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" /></td>
+                        <td><input type="text" name="stemElongation" size="6" data-validation-engine="validate[required,min[0],custom[number]]" class="form-control" /></td>
+                        <td><input type="text" name="stemCircumference" size="6" data-validation-engine="validate[required,min[0],custom[number]]" class="form-control" /></td>
+                        <td><input type="text" name="topDistance" size="6" data-validation-engine="validate[required,min[0],custom[number]]" class="form-control" /></td>
+                        <td><input type="text" name="topNumberLeaves" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" class="form-control" /></td>
+                        <td><input type="text" name="numberLeaves" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" class="form-control" /></td>
+                        <td><input type="text" name="upperLeafArea_verticalWidth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" class="form-control" /></td>
+                        <td><input type="text" name="upperLeafArea_breadth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" class="form-control" /></td>
+                        <td><input type="text" name="mediumLeafArea_verticalWidth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" class="form-control" /></td>
+                        <td><input type="text" name="mediumLeafArea_breadth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" class="form-control" /></td>
+                        <td><input type="text" name="lowerLeafArea_verticalWidth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" class="form-control" /></td>
+                        <td><input type="text" name="lowerLeafArea_breadth" size="6" data-validation-engine="validate[required,min[0],custom[integer]]" class="form-control" /></td>
                         
                         <td>
-                            <select name="growingCondition">
+                            <select name="growingCondition" class="form-control">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3" selected>3</option>
