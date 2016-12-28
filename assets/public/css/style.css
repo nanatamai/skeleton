@@ -175,7 +175,7 @@ a:focus, *:focus {
 
 #header .navbar-nav .btn  {
   font-size: 15.5px;
-  padding: 4px 40px 12px 40px;
+  padding: 12px 40px 12px 40px;
   float: right;
 }
 
@@ -185,7 +185,6 @@ a:focus, *:focus {
 
 #header .navbar-nav .btn .glyphicon  {
   padding-right: 7px;
-  font-size: 32px;
 }
 
 @media (max-width: 1200px) {
