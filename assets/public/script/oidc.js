@@ -157,7 +157,7 @@ OidcController.prototype = {
             // 通信が完了したとき
         });
     },
-    GetApiJson:  function(url, data_func) {
+    GetApiJson:  function(url, data_func, thisInstance) {
 
         var this_func = this;
 
@@ -176,6 +176,7 @@ OidcController.prototype = {
                 'Authorization': 'Bearer ' + token["access_token"],
             },
             timeout: 10000,
+            context: thisInstance,
         })
         .done(function( data, textStatus, jqXHR ) {
             // 通信が成功したときの処理
@@ -183,10 +184,10 @@ OidcController.prototype = {
                 if($.isArray(data)) {
                     if(data["result"].length > 0) {
                     
-                        data_func(data);
+                        data_func(data, this);
                     }
                 } else {
-                    data_func(data);
+                    data_func(data, this);
                 }
                 
             }

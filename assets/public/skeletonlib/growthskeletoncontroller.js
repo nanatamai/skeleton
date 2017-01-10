@@ -83,7 +83,7 @@ function GrowthSkeletonController(options) {
     this.setInstanceValiable(options, "apiUrl");
 
     this.defaultOptions = $.extend(true, {
-        "configFile": "config.json.js",
+        "configFile": "config.json",
         "config": {},
 //        "baseFile": "",
         "size": { "width": 300, "height": 350 },
@@ -95,7 +95,8 @@ function GrowthSkeletonController(options) {
         "overlayJson": [],
 
         // for debug
-        "canvasSave": false
+        "canvasSave": false,
+        "toolTip": true,
     }, options);
     this.optionsList = [];
     this.jsonSchema = {
@@ -128,56 +129,260 @@ GrowthSkeletonController.prototype = {
     },
     draw: function (selector, options) {
 
-        var thisInstance = this;
+//        var thisInstance = this;
 
         marge_option = $.extend(true, $.extend(true, { "selector": selector }, this.defaultOptions), options);
 
+
         $.ajaxSetup({async: false});//同期通信(json取ってくるまで待つ)
-        $.getJSON(marge_option.configFile, function(data){
-            marge_option.config = data;
-        });
+//        $.getJSON(marge_option.configFile, function(data){
+//            marge_option.config = data;
+//        });
 //        $.ajaxSetup({async: true});
 
-        api_url = thisInstance.apiUrl + "/" + marge_option.data.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
 
-        oidc.GetApiJson(api_url, function(data_json){
 
-            $.each(data_json["result"], function(i, val) {
+        $.ajax({
+            url: marge_option.configFile,
+            dataType:'json',
+            context: this,
+        }).done(function(data) {
+//            var thisInstance = this;
 
-                var parseData = JSON.parse(val["assay_data"]);
+            marge_option.config = data;
 
-                thisInstance.inquiryItemsArray2Hash(parseData, val);
+            api_url = this.apiUrl + "/" + marge_option.data.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
 
-                Array.prototype.push.apply(marge_option.dataJson, parseData["assay_array"]);
-            });
-            
-            // overlay
-            if(marge_option.overlay.length > 0) {
+            oidc.GetApiJson(api_url, function(data_json, thisInstance){
 
-                overlay_url = thisInstance.apiUrl + "/" + marge_option.overlay.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+                $.each(data_json["result"], function(i, val) {
 
-                oidc.GetApiJson(overlay_url, function(overlay_json){
+                    var parseData = JSON.parse(val["assay_data"]);
 
-                    $.each(overlay_json["result"], function(i, val) {
+                    thisInstance.inquiryItemsArray2Hash(parseData, val);
 
-                        var parseData = JSON.parse(val["assay_data"]);
+                    Array.prototype.push.apply(marge_option.dataJson, parseData["assay_array"]);
+                });
+                
+                // overlay
+                if(marge_option.overlay.length > 0) {
 
-                        thisInstance.inquiryItemsArray2Hash(parseData, val);
+                    overlay_url = thisInstance.apiUrl + "/" + marge_option.overlay.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
 
-                        Array.prototype.push.apply(marge_option.overlayJson, parseData["assay_array"]);
-                    });
+                    oidc.GetApiJson(overlay_url, function(overlay_json, thisInstance){
+
+                        $.each(overlay_json["result"], function(i, val) {
+
+                            var parseData = JSON.parse(val["assay_data"]);
+
+                            thisInstance.inquiryItemsArray2Hash(parseData, val);
+
+                            Array.prototype.push.apply(marge_option.overlayJson, parseData["assay_array"]);
+                        });
+
+                        thisInstance.loadJsonComplete(marge_option);
+                    }, thisInstance);
+                } else {
 
                     thisInstance.loadJsonComplete(marge_option);
-                });
-            } else {
+                }
 
-                thisInstance.loadJsonComplete(marge_option);
+                thisInstance.setToolTip(selector);
+            }, this);
+            
+        }).fail(function(data) {
+//            alert('error!!!');
+        });
+        
+    },
+    groupDraw: function($list, $carousel, options) {
+
+        marge_option = $.extend(true, { "selector": $carousel }, this.defaultOptions);
+
+        api_url = options.apiGroupUrl + "/" + options.group + "/skeletons?scope=group." + options.group + ".read";
+
+        oidc.GetApiJson(api_url, function(data_json, thisInstance){
+
+            thisInstance.CreateUserList($list, $carousel, marge_option, data_json)
+        }, this);
+
+    },
+    // ユーザー一覧を作成
+    CreateUserList: function($users_div, $carousel, option, data_json) {
+
+        var date_list = this.CreateGroupDateList(data_json);
+
+//        var $users_div = $("<div class=\"user-skeleton box-float\">").appendTo($selector);
+//        var $test_div = $("<div class=\"box-float\">").appendTo($selector);
+//        var $carousel_div = $("<div class=\"carousel-box\">").appendTo($test_div);
+
+//        var $users_div = $($selector.find("#skeleton_list"));
+        var $carousel_div = $("<div class=\"carousel-box slider\">").appendTo($carousel);
+
+        // ユーザー情報を表示
+        $.each(data_json["result"], function(i, val) {
+            $user_div = $("<div class=\"user-name\">").appendTo($users_div);
+            $user_div.html(val.skeleton_name);
+        });
+
+        // カルーセル作成
+        $.each(date_list, function(i, val) {
+            $date_div = $("<div class=\"date-carousel\">").appendTo($carousel_div);
+
+            $.each(val.data_ids, function(j, data_id) {
+
+                if(data_id) {
+                    $date_div.append("<div class=\"skeleton-box\" data-skeletondataid=\"" + data_id + "\" data-skeletonid=\"" + val.skeleton_ids[j] + "\">" + "</div>");
+                } else {
+                    $date_div.append("<div class=\"skeleton-box\">" + "無し" + "</div>");
+                }
+                
+            });
+            
+        });
+
+        this.SetCarousel($carousel_div, 4);
+        this.CarouselLoadedSkeletonDraw($carousel_div, 4);
+
+    },
+    // カルーセル用日付リストを作成
+    CreateGroupDateList: function(data_json) {
+
+//        var baseArray = new Array(data_json["result"].length);
+        var date_list = [];
+
+        $.each(data_json["result"], function(i, val) {
+            $.each(val["skeleton_data"], function(j, skeleton_data) {
+
+                var data_array = new Array(data_json["result"].length);
+                    data_array[i] = skeleton_data["id"];
+                var skeleton_array = new Array(data_json["result"].length);
+                skeleton_array[i] = val.skeleton_id;
+                
+                if(i > 0) {
+                    // 追加されていない日付
+                    var date_index = this.SearchDateList(date_list, skeleton_data["assay_date"]);
+                    if( date_index < 0){
+                        date_list.push({
+                            skeleton_date: skeleton_data["assay_date"],
+                            data_ids: data_array,
+                            skeleton_ids: skeleton_array,
+                        });
+                    } else {
+                        date_list[date_index].data_ids[i] = skeleton_date["id"];
+                        date_list[date_index].skeleton_ids[i] = val.skeleton_id;
+                    }
+
+                } else {
+                    // 初回
+                    date_list.push({
+                        skeleton_date: skeleton_data["assay_date"],
+                        data_ids: data_array,
+                        skeleton_ids: skeleton_array,
+                    });
+                }
+//                if(date_list.indexOf(skeleton_data["assay_date"]) < 0){
+//                    date_list.push(skeleton_data["assay_date"]);
+//                }
+            });
+        });
+
+        date_list.sort(function(a,b){
+                if( a.skeleton_date > b.skeleton_date ) return -1;
+                if( a.skeleton_date < b.skeleton_date ) return 1;
+                return 0;
+        });
+        return date_list;
+    },
+    // 日付の検索
+    SearchDateList: function(date_array, date) {
+
+        var index = -1;
+
+        $.each(date_array, function(i, val) {
+
+            if(val["skeleton_date"] == date) {
+                index = i;
+                return false;
+            }
+        });
+
+        return index;
+    },
+
+    // Slickを設定
+    SetCarousel: function($carousel, show_index) {
+
+        var thisInstance = this;
+        var slick_options = {
+//        $("#testslick").slick({
+            infinite: false,
+            slidesToShow: show_index,
+            appendArrows: $("#arrows"),
+//            arrows: true,
+        }
+
+        // Slickを設定
+        $carousel.slick(slick_options);
+
+        // イベント追加
+        $carousel.on('beforeChange', function(event, slick, currentSlide, nextSlide){
+            console.log(nextSlide);
+
+            var $carousel_date_box = $(slick.$slider.find(".date-carousel"));
+
+//            if(slick.$slider.find(".date-carousel").length > nextSlide + show_index) {
+            if($carousel_date_box.length >= nextSlide + show_index) {
+
+                thisInstance.CarouselSkeletonDraw($($carousel_date_box[nextSlide + show_index - 1]), thisInstance);
+            }
+        });
+    },
+
+    // スケルトンの描画
+    CarouselLoadedSkeletonDraw: function($carousel, loaded_index) {
+
+        var thisInstance = this;
+
+        $.each($carousel.find(".date-carousel"), function(i, date_box) {
+
+            // 初回表示分を越えたら終了する
+            if(i >= loaded_index) {
+                return false;
             }
 
-            thisInstance.setToolTip(selector);
+            // スケルトン分繰り返し
+            thisInstance.CarouselSkeletonDraw($(date_box), thisInstance)
+/*            $.each($(date_box).find("[data-skeletondataid]"), function(j, skeleton_box) {
 
+                var marge_option = $.extend(true, {
+                    skeleton_id: $(skeleton_box).data("skeletonid"),
+                    data: [$(skeleton_box).data("skeletondataid")],
+                }, thisInstance.defaultOptions);
 
+                thisInstance.draw($(skeleton_box), marge_option, this);
+            });
+*/
         });
+    },
+    // スケルトンの日付単位の描画
+    CarouselSkeletonDraw: function($date_box, thisInstance) {
+
+        $.each($date_box.find("[data-skeletondataid]"), function(j, skeleton_box) {
+
+            var marge_option = $.extend(true, {
+                skeleton_id: $(skeleton_box).data("skeletonid"),
+                data: [$(skeleton_box).data("skeletondataid")],
+            }, thisInstance.defaultOptions);
+
+            thisInstance.draw($(skeleton_box), marge_option, this);
+
+            $(skeleton_box).removeData("skeletonid");
+            $(skeleton_box).removeData("skeletondataid");
+            $(skeleton_box).removeAttr("data-skeletonid");
+            $(skeleton_box).removeAttr("data-skeletondataid");
+        });
+
     },
     // オプションをインスタンス変数化
     setInstanceValiable: function(options, key) {
@@ -563,14 +768,17 @@ GrowthSkeletonController.prototype = {
 
         $figure = $("<figure class=\"SkeletonCanvasMap\">").appendTo($div);
         $figure.append("<canvas " + sizeString + "></canvas>");
-        $figure.append("<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQImWP4//8/AAX+Av5Y8msOAAAAAElFTkSuQmCC\" " + sizeString + " class=\"mapImageLayer\" />");
 
-        $map = $("<map>").appendTo($figure);
-        $map.append("<area data-tooltiptitle=\"茎伸長量(cm/week)\" data-info=\"stemElongation\" data-unit=\"cm\" nohref />");
-        $map.append("<area data-tooltiptitle=\"直径(cm)\" data-info=\"stemDiameter\" data-unit=\"cm\" nohref />");
-        $map.append("<area data-tooltiptitle=\"上位葉の大きさ(m<sup>2</sup>)\" data-info=\"topLeafArea\" data-unit=\"m2\" nohref />");
-        $map.append("<area data-tooltiptitle=\"中位葉の大きさ(m<sup>2</sup>)\" data-info=\"middleLeafArea\" data-unit=\"m2\" nohref />");
-        $map.append("<area data-tooltiptitle=\"下位葉の大きさ(m<sup>2</sup>)\" data-info=\"bottomLeafArea\" data-unit=\"m2\" nohref />");
+        if(option.toolTip) {
+            $figure.append("<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQImWP4//8/AAX+Av5Y8msOAAAAAElFTkSuQmCC\" " + sizeString + " class=\"mapImageLayer\" />");
+
+            $map = $("<map>").appendTo($figure);
+            $map.append("<area data-tooltiptitle=\"茎伸長量(cm/week)\" data-info=\"stemElongation\" data-unit=\"cm\" nohref />");
+            $map.append("<area data-tooltiptitle=\"直径(cm)\" data-info=\"stemDiameter\" data-unit=\"cm\" nohref />");
+            $map.append("<area data-tooltiptitle=\"上位葉の大きさ(m<sup>2</sup>)\" data-info=\"topLeafArea\" data-unit=\"m2\" nohref />");
+            $map.append("<area data-tooltiptitle=\"中位葉の大きさ(m<sup>2</sup>)\" data-info=\"middleLeafArea\" data-unit=\"m2\" nohref />");
+            $map.append("<area data-tooltiptitle=\"下位葉の大きさ(m<sup>2</sup>)\" data-info=\"bottomLeafArea\" data-unit=\"m2\" nohref />");
+        }
 
         // titleが設定されていない場合、タグを生成しない
         if (title != null) {
