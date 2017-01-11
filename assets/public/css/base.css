@@ -180,3 +180,17 @@ th {
 #repeater .btn-primary  {
   margin-left: 9px;
 }
+
+#arrows .slick-arrow  {
+  position: absolute;
+}
+
+#arrows .slick-prev  {
+  top: 0;
+  left: 25px;
+}
+
+#arrows .slick-next  {
+  top: 0;
+  right: 25px;
+}
