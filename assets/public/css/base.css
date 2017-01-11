@@ -194,3 +194,7 @@ th {
   top: 0;
   right: 25px;
 }
+
+#skeleton_list .user-name  {
+  height: 300px;
+}
