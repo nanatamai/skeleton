@@ -36,3 +36,11 @@
   border-right: 1px solid #d2d6de;
   border-bottom: 1px solid #d2d6de;
 }
+
+.crudframe_ttl {
+    background-color: #82be28;
+    color: white;
+    font-size: 16px;
+    margin: 0;
+    padding: 6px 12px 10px;
+}
