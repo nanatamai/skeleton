@@ -56,6 +56,15 @@
             .slick-next:before {
                 color: black;
             }
+            .mapImageLayer {
+                left: 0;
+                opacity: 0;
+                position: absolute;
+                top: 0;
+            }
+            .qtip-content {
+                text-align: right;
+            }
         -->
         </style>
 
@@ -73,7 +82,7 @@
                         "configFile": "config.json",
                         "size": { "width": 200, "height": 250 },
                         "canvasSave": true,    // デバッグ用、canvas保存ボタンを表示
-                        "toolTip": false,
+                        "toolTip": true,
                     });
 
                     // 生育状態
