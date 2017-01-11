@@ -249,6 +249,7 @@ GrowthSkeletonController.prototype = {
     CreateGroupDateList: function(data_json) {
 
 //        var baseArray = new Array(data_json["result"].length);
+        thisInstance = this;
         var date_list = [];
 
         $.each(data_json["result"], function(i, val) {
@@ -261,7 +262,7 @@ GrowthSkeletonController.prototype = {
                 
                 if(i > 0) {
                     // 追加されていない日付
-                    var date_index = this.SearchDateList(date_list, skeleton_data["assay_date"]);
+                    var date_index = thisInstance.SearchDateList(date_list, skeleton_data["assay_date"]);
                     if( date_index < 0){
                         date_list.push({
                             skeleton_date: skeleton_data["assay_date"],
