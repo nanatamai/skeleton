@@ -198,3 +198,18 @@ th {
 #skeleton_list .user-name  {
   height: 300px;
 }
+
+#skeleton_carousel .growth-draw-area figure {
+    margin: 0 0 0 0;
+    width: auto;
+    background-color: transparent;
+    border: none;
+}
+
+#skeleton_carousel .SkeletonCanvasMap canvas {
+    margin: 0 0 0 0;
+}
+
+#skeleton_carousel .SkeletonCanvasMap .mapImageLayer {
+    margin: 0 0 0 0;
+}
