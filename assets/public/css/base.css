@@ -187,6 +187,8 @@ th {
 }
 
 #arrows .slick-arrow  {
+  width: 28px;
+  height: 28px;
   position: absolute;
   font-size: 28px;
 }
@@ -203,6 +205,13 @@ th {
 #arrows .slick-next  {
   top: 0;
   right: 40px;
+}
+
+@media (max-width: 767px) {
+  #arrows  {
+    width: 98%;
+    margin: 0 auto 0 auto;
+  }
 }
 
 #main_box  {
