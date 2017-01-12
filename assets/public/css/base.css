@@ -192,12 +192,16 @@ th {
 
 #arrows .slick-prev  {
   top: 0;
-  left: 25px;
+  left: 40px;
 }
 
 #arrows .slick-next  {
   top: 0;
-  right: 25px;
+  right: 40px;
+}
+
+#main_box  {
+  padding-top: 15px;
 }
 
 #skeleton_list .user-name  {
