@@ -625,7 +625,7 @@ background-color:transparent;
 
 #contents .container  {
   width: 97%;
-  padding-top: 15px;
+  padding-top: 20px;
   padding-bottom: 15px;
   min-height: 642px;
 }
@@ -712,13 +712,13 @@ background-color:transparent;
   font-size: 25px;
 }
 
-#main .skeleton_header  {
+#main .skeleton_header, .contents_skeleton_group .skeleton_header  {
   margin: 1px 0 8px 0;
   padding: 9px 0 9px 10px;
   border-bottom: 3px solid #82be28;
 }
 
-#main .skeleton_header h1  {
+#main .skeleton_header h1, .contents_skeleton_group .skeleton_header h1  {
   margin: 0 0 0 0;
   padding: 0 0 0 0;
   border-bottom: none;
@@ -738,7 +738,7 @@ background-color:transparent;
 }
 
 /*float解除用のclear_fix*/ 
-#main .skeleton_header:after  {
+#main .skeleton_header:after, .contents_skeleton_group .skeleton_header:after  {
   content: "";
   display: block;
   clear: both;
