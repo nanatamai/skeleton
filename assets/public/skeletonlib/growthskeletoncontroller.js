@@ -187,7 +187,7 @@ GrowthSkeletonController.prototype = {
                     thisInstance.loadJsonComplete(marge_option);
                 }
 
-                thisInstance.setToolTip(selector);
+                thisInstance.setToolTip(marge_option.selector);
             }, this);
             
         }).fail(function(data) {
