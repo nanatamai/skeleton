@@ -222,7 +222,7 @@ GrowthSkeletonController.prototype = {
         // ユーザー情報を表示
         $.each(data_json["result"], function(i, val) {
             $user_div = $("<div class=\"user-name\">").appendTo($users_div);
-            $user_div.html(val.skeleton_name);
+            $user_div.html("<span>" + val.skeleton_name + "</span>");
         });
 
         // カルーセル作成
@@ -234,7 +234,7 @@ GrowthSkeletonController.prototype = {
                 if(data_id) {
                     $date_div.append("<div class=\"skeleton-box\" data-skeletondataid=\"" + data_id + "\" data-skeletonid=\"" + val.skeleton_ids[j] + "\">" + "</div>");
                 } else {
-                    $date_div.append("<div class=\"skeleton-box\">" + "無し" + "</div>");
+                    $date_div.append("<div class=\"skeleton-box none\">" + "<span class=no_display>No Image</span>" + "</div>");
                 }
                 
             });
