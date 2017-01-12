@@ -183,6 +183,11 @@ th {
 
 #arrows .slick-arrow  {
   position: absolute;
+  font-size: 28px;
+}
+
+#arrows .slick-prev::before, #arrows .slick-next::before {
+  font-size: 28px;
 }
 
 #arrows .slick-prev  {
