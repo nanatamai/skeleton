@@ -624,7 +624,8 @@ background-color:transparent;
 }
 
 #contents .container  {
-  padding-top: 22px;
+  width: 97%;
+  padding-top: 15px;
   padding-bottom: 15px;
   min-height: 642px;
 }
