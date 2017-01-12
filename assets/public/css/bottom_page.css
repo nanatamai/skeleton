@@ -1,5 +1,25 @@
 #header {
-    border-bottom: 6px solid #82be28;
+    border-bottom: none;
+}
+
+#bottom_nav {
+    background-color: #82be28;
+    padding: 8px 0;
+}
+#bottom_nav .nav {
+    display: flex;
+    margin: 0 auto 0 15px;
+    width: 50%;
+}
+#bottom_nav .nav li {
+    flex-grow: 2;
+    text-align: center;
+}
+#bottom_nav .nav li a {
+    color: white;
+}
+#bottom_nav .nav li a:hover, #bottom_nav .nav li a:focus {
+    background-color: #6da31b;
 }
 
 .bottom_contents {
@@ -15,4 +35,12 @@
   border-left: 1px solid #d2d6de;
   border-right: 1px solid #d2d6de;
   border-bottom: 1px solid #d2d6de;
+}
+
+.crudframe_ttl {
+    background-color: #82be28;
+    color: white;
+    font-size: 16px;
+    margin: 0;
+    padding: 6px 14px 10px 14px;
 }

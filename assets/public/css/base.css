@@ -180,3 +180,65 @@ th {
 #repeater .btn-primary  {
   margin-left: 9px;
 }
+
+#control_box  {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#arrows .slick-arrow  {
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  font-size: 28px;
+}
+
+#arrows .slick-prev::before, #arrows .slick-next::before {
+  font-size: 28px;
+}
+
+#arrows .slick-prev  {
+  top: 0;
+  left: 40px;
+}
+
+#arrows .slick-next  {
+  top: 0;
+  right: 40px;
+}
+
+@media (max-width: 767px) {
+  #arrows  {
+    width: 98%;
+    margin: 0 auto 0 auto;
+  }
+}
+
+#main_box  {
+  padding-top: 15px;
+}
+
+#skeleton_list .user-name  {
+  height: 300px;
+}
+
+@media (max-width: 567px) {
+  #skeleton_list .user-name  {
+    height: 100px;
+  }
+}
+
+#skeleton_carousel .growth-draw-area figure {
+    margin: 0 0 0 0;
+    width: auto;
+    background-color: transparent;
+    border: none;
+}
+
+#skeleton_carousel .SkeletonCanvasMap canvas {
+    margin: 0 0 0 0;
+}
+
+#skeleton_carousel .SkeletonCanvasMap .mapImageLayer {
+    margin: 0 0 0 0;
+}

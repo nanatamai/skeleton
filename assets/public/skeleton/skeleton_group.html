@@ -31,6 +31,7 @@
         <link rel="stylesheet" type="text/css" href="/skeletonlib/css/print.min.css" media="print" />
 -->
         <link rel="stylesheet" type="text/css" href="/skeletonlib/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/css/style.css" type="text/css"/>
         <link rel="stylesheet" type="text/css" href="/skeletonlib/css/jquery.qtip.min.css" />
         <link rel="stylesheet" type="text/css" href="/skeletonlib/css/slick.css"/>
         <link rel="stylesheet" type="text/css" href="/skeletonlib/css/slick-theme.css"/>
@@ -107,6 +108,38 @@
     </head>
 
     <body>
+        <nav id="header" class="navbar navbar-default">
+            <div class="navbar-inner">
+            <div class="container">
+                <div class="navbar-header">
+                <a class="navbar-brand" href="/"><img src="/skeletonlib/img/logo2.png" class="img-responsive" alt="生育スケルトン"></a>
+                </div>
+                <ul class="nav navbar-nav navbar-right nav_skeleton">
+                <p>週1回のテープメジャーの計測データから、樹勢の直感的な把握と生育状態変化の評価を実現します。</p>
+                </ul>
+            </div>
+            </div>
+        </nav>
+
+        <div id="breadcrumb_box">
+            <div class="container">
+            <ol class="breadcrumb growth_skeleton">
+                <li><a href="../">生育スケルトン</a></li>
+                <li class="active">草勢見える化（生育バランス比較）</li>
+            </ol>
+            </div>
+        </div><!-- breadcrumb_boxここまで -->
+
+        <div id="contents" class="contents_skeleton_group">
+            <div class="container">
+            
+            <div class="skeleton_header">
+                <h1>草勢見える化（生育バランス比較）</h1>
+            </div>
+
+            <header>
+                <h2 id="ttl_first">○○○グループの生育バランスの比較</h2>
+            </header>
 
 <!--        <table id="skeleton_group_view">
             <tr>
@@ -120,12 +153,12 @@
             </tr>
         </table>
 -->
-        <div class="row">
+        <div id="control_box" class="row">
             <div id="arrows" class="col-sm-10 col-sm-offset-2">
 <!--                <div id="arrows"></div>  -->
             </div>
-         </div>
-        <div class="row">
+        </div>
+        <div id="main_box" class="row">
             <div class="col-sm-2">
                 <div id="skeleton_list"></div>
             </div>
@@ -136,9 +169,32 @@
             </div>
          </div>
 
-        
-        
+            </div>
+        </div><!-- contentsここまで -->
 
+        <div id="footer">
+                
+            <div id="footer_nav">
+                <div class="container">
+                <ul class="nav nav-pills center">
+                    <li><a href="/">トップページ</a></li>
+                </ul>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="row">
+                <div class="col-sm-4">
+                    <h4 class="footer_logo"><a href="/"><img src="/images/footer_logo.png" class="img-responsive" alt="生育スケルトン"></a></h4>
+                </div>
+                <div class="col-sm-8">
+                    <p class="copyrights">Copyright © 2016 All Rights Reserved.</p>
+                </div>
+                </div>
+            </div>
+            
+        </div><!-- footerここまで -->    
+        
     </body>
 
 
