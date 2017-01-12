@@ -181,6 +181,11 @@ th {
   margin-left: 9px;
 }
 
+#control_box  {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 #arrows .slick-arrow  {
   position: absolute;
   font-size: 28px;
