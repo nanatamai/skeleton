@@ -554,6 +554,7 @@ background-color:transparent;
 }
 
 #breadcrumb_box .container  {
+  width: 97%;
   background-color: #f4f4f4;
 }
 
