@@ -228,6 +228,10 @@ th {
   }
 }
 
+#skeleton_carousel .skeleton-box {
+  width: 220px;
+}
+
 #skeleton_carousel .growth-draw-area figure {
     margin: 0 auto 0 auto;
     width: auto;
@@ -247,4 +251,11 @@ th {
   background-image: url("css_images/nodata_icon.png");
   background-repeat: no-repeat;
   background-position: center center;
+}
+
+#skeleton_carousel figcaption {
+  font-size: 15px;
+  padding: 10px 0 10px 0;
+  text-align: center;
+  color: #848282;
 }
