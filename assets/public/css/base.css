@@ -329,3 +329,11 @@ th {
     background-image: url("css_images/nodata_icon2.png");
   }
 }
+
+@media (max-width: 850px) {
+  #skeleton_carousel figcaption {
+    font-size: 14px;
+    text-align: left;
+    padding-left: 15px;
+  }
+}

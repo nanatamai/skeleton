@@ -668,21 +668,23 @@ background-color:transparent;
 @media (max-width: 767px) {
   #contents .container  {
     width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   #contents .col-sm-2  {
     float: left;
-    width: 35%;
+    width: 31%;
     padding-left: 15px;
   }
   #contents .col-sm-offset-2 {
-    margin-left: 35%;
+    margin-left: 31%;
   }
   #contents #control_box .col-sm-offset-2 {
     margin-left: 0;
   }
   #contents .col-sm-10  {
     float: left;
-    width: 65%;
+    width: 69%;
     padding-right: 15px;
   }
   #contents #control_box .col-sm-10 {
