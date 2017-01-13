@@ -670,13 +670,21 @@ background-color:transparent;
   #contents .col-sm-2  {
     float: left;
     width: 35%;
+    padding-left: 15px;
   }
   #contents .col-sm-offset-2 {
     margin-left: 35%;
   }
+  #contents #control_box .col-sm-offset-2 {
+    margin-left: 0;
+  }
   #contents .col-sm-10  {
     float: left;
     width: 65%;
+    padding-right: 15px;
+  }
+  #contents #control_box .col-sm-10 {
+    width: 98%;
   }
 }
 

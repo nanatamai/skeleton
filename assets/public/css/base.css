@@ -250,7 +250,13 @@ th {
 
 @media (max-width: 1150px) {
   #skeleton_list .user-name  {
-    background-size: contain;
+    background-image: url("css_images/user_icon2.png");
+  }
+}
+
+@media (max-width: 1075px) {
+  #skeleton_list .user-name span  {
+    width: 80%;
   }
 }
 
@@ -273,6 +279,12 @@ th {
 #skeleton_carousel .skeleton-box {
   width: auto;
   padding-left: 60px;
+}
+
+@media (max-width: 767px) {
+  #skeleton_carousel .skeleton-box {
+    padding-left: 0;
+  }
 }
 
 #skeleton_carousel .growth-draw-area figure {
