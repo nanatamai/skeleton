@@ -248,6 +248,12 @@ th {
 	-moz-border-radius: 3px;	/* Firefox用 */
 }
 
+@media (max-width: 1150px) {
+  #skeleton_list .user-name  {
+    background-size: contain;
+  }
+}
+
 @media (max-width: 567px) {
   #skeleton_list .user-name  {
     height: auto;
