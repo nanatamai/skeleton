@@ -636,11 +636,17 @@ background-color:transparent;
 }
 
 #contents .col-sm-2 {
+  width: 20%;
   padding-right: 0;
   padding-left: 25px;
 }
 
+#contents .col-sm-offset-2 {
+  margin-left: 20%;
+}
+
 #contents .col-sm-10 {
+  width: 80%;
   padding-left: 0;
   padding-right: 25px;
 }
