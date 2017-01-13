@@ -228,12 +228,18 @@ th {
   }
 }
 
+#skeleton_carousel .slick-slide {
+  margin: 0 0 0 0;
+}
+
 #skeleton_carousel .skeleton-box {
-  width: 220px;
+  width: auto;
+  padding-left: 60px;
 }
 
 #skeleton_carousel .growth-draw-area figure {
     margin: 0 auto 0 auto;
+    padding: 10px 0 9px 0;
     width: auto;
     background-color: transparent;
     border: none;
@@ -258,4 +264,8 @@ th {
   padding: 15px 0 15px 0;
   text-align: center;
   color: #848282;
+}
+
+.date-carousel .skeleton-box:nth-child(odd) {
+  background-color: #f9f9f9;
 }
