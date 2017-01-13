@@ -226,10 +226,17 @@ th {
 }
 
 #skeleton_list .user-name span  {
-  width: 100%;
+  width: 70%;
   margin: 0 auto 0 auto;
+  padding: 8px 10px 8px 10px;
+  background-color: #7cb822;
+  font-size: 13px;
+  color: white;
   text-align: center;
-  display: inline-block;
+  display: block;
+  border-radius: 3px;		/* CSS3草案 */
+	-webkit-border-radius: 3px;	/* Safari,Google Chrome用 */
+	-moz-border-radius: 3px;	/* Firefox用 */
 }
 
 @media (max-width: 567px) {
