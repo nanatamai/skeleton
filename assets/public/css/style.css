@@ -635,6 +635,10 @@ background-color:transparent;
   margin-top: 0;
 }
 
+#contents .col-sm-2 {
+  padding-right: 0;
+}
+
 #contents .col-sm-10 {
   padding-left: 0;
 }
