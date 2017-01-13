@@ -254,9 +254,15 @@ th {
   }
 }
 
+@media (max-width: 991px) {
+  #skeleton_list .user-name  {
+    background-position: center 10px;
+  }
+}
+
 @media (max-width: 567px) {
   #skeleton_list .user-name  {
-    height: auto;
+    height: 300px;
   }
 }
 

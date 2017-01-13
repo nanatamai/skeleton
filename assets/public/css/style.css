@@ -651,6 +651,18 @@ background-color:transparent;
   padding-right: 25px;
 }
 
+@media (max-width: 991px) {
+  #contents .col-sm-2  {
+    width: 30%;
+  }
+  #contents .col-sm-offset-2 {
+    margin-left: 30%;
+  }
+  #contents .col-sm-10  {
+    width: 70%;
+  }
+}
+
 @media (max-width: 767px) {
   #contents .container  {
     width: 100%;
@@ -667,15 +679,11 @@ background-color:transparent;
 
 @media (max-width: 567px) {
   #main_box .col-sm-2  {
-    float: none;
-    width: 100%;
+    width: 40%;
     padding-left: 10px;
-    padding-right: 10px;
   }
   #main_box .col-sm-10  {
-    float: none;
-    width: 100%;
-    padding-left: 10px;
+    width: 60%;
     padding-right: 10px;
   }
 }
