@@ -323,3 +323,9 @@ th {
 #skeleton_list .user-name:nth-child(odd) {
   background-color: #f9f9f9;
 }
+
+@media (max-width: 767px) {
+  #skeleton_carousel .skeleton-box.none {
+    background-image: url("css_images/nodata_icon2.png");
+  }
+}
