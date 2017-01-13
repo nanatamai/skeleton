@@ -229,7 +229,7 @@ th {
 }
 
 #skeleton_carousel .growth-draw-area figure {
-    margin: 0 0 0 0;
+    margin: 0 auto 0 auto;
     width: auto;
     background-color: transparent;
     border: none;
@@ -241,4 +241,10 @@ th {
 
 #skeleton_carousel .SkeletonCanvasMap .mapImageLayer {
     margin: 0 0 0 0;
+}
+
+#skeleton_carousel .skeleton-box.none {
+  background-image: url("css_images/nodata_icon.png");
+  background-repeat: no-repeat;
+  background-position: center center;
 }
