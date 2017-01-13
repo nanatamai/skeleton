@@ -692,6 +692,15 @@ background-color:transparent;
   }
 }
 
+@media (max-width: 568px) {
+  #control_box {
+    display: none;
+  }
+  #main_box {
+    display: none;
+  }
+}
+
 @media (max-width: 567px) {
   #main_box .col-sm-2  {
     width: 40%;
