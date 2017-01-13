@@ -108,7 +108,7 @@
         </script>
     </head>
 
-    <body>
+    <body id="page_top" data-offset="86">
         <nav id="header" class="navbar navbar-default">
             <div class="navbar-inner">
             <div class="container">
@@ -176,6 +176,10 @@
             </div>
         </div><!-- contentsここまで -->
 
+        <div id="junp_top">
+            <p><a href="#page_top"><img src="/images/page_top.png" alt="ページトップ" class="img-responsive"></a></p>
+        </div>
+
         <div id="footer">
                 
             <div id="footer_nav">
@@ -197,7 +201,43 @@
                 </div>
             </div>
             
-        </div><!-- footerここまで -->    
+        </div><!-- footerここまで -->
+        <script type="text/javascript">
+
+            $(function(){
+                $('a[href^="#"]'+'a:not(".carousel-control")'+'a:not(".dropdown-toggle")'+'a:not(".bx-pager-item")'+'a:not(".bx-controls-direction")'+'a:not(".voice_modal")'+'a:not(".popup-iframe")').click(function(){
+                    var speed = 500;
+                    var href= $(this).attr("href");
+                    var target = $(href == "#" || href == "" ? 'html' : href);
+                    var position = target.offset().top - 0;
+                    $("html, body").animate({scrollTop:position}, speed, "swing");
+                    return false;
+                });
+            });
+
+            $(function(){
+                var flag = false;
+                var junptop = $('#junp_top');
+                $(window).scroll(function () {
+                    if ($(this).scrollTop() > 350) {
+                    if (flag == false) {
+                        flag = true;
+                        junptop.stop().animate({
+                        'bottom': '10px'
+                        }, 200);
+                    }
+                    } else {
+                    if (flag) {
+                        flag = false;
+                        junptop.stop().animate({
+                        'bottom': '-90px'
+                        }, 200);
+                    }
+                    }
+                });
+            });
+        
+        </script>    
         
     </body>
 
