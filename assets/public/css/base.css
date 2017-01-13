@@ -288,8 +288,8 @@ th {
 }
 
 #skeleton_carousel .growth-draw-area figure {
-    margin: 0 auto 0 auto;
-    padding: 17px 0 2px 0;
+    margin: 17px auto 0 auto;
+    padding: 0 0 0 0;
     width: auto;
     background-color: transparent;
     border: none;
@@ -324,7 +324,7 @@ th {
   background-color: #f9f9f9;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
   #skeleton_carousel .skeleton-box.none {
     background-image: url("css_images/nodata_icon2.png");
   }
