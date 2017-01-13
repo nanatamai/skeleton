@@ -269,3 +269,7 @@ th {
 .date-carousel .skeleton-box:nth-child(odd) {
   background-color: #f9f9f9;
 }
+
+#skeleton_list .user-name:nth-child(odd) {
+  background-color: #f9f9f9;
+}
