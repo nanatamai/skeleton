@@ -22,6 +22,25 @@
     background-color: #6da31b;
 }
 
+@media (max-width: 991px) {
+  #bottom_nav .nav  {
+    width: 75%;
+  }
+  #bottom_nav .nav li a {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 767px) {
+  #bottom_nav .nav li a {
+    padding-left: 7px;
+    padding-right: 7px;
+    font-size: 12px;
+  }
+}
+
 .bottom_contents {
   height:100vh;
   width:95%;

@@ -325,6 +325,25 @@ a:focus, *:focus {
   background-color: #6da31b;
 }
 
+@media (max-width: 991px) {
+  #loginMenu .nav  {
+    width: 75%;
+  }
+  #loginMenu .nav li a {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 767px) {
+  #loginMenu .nav li a {
+    padding-left: 7px;
+    padding-right: 7px;
+    font-size: 12px;
+  }
+}
+
 #top_box  {
   margin-top: 0;
 }
