@@ -281,7 +281,7 @@ th {
   padding-left: 60px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
   #skeleton_carousel .skeleton-box {
     padding-left: 0;
   }
