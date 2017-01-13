@@ -225,9 +225,16 @@ th {
   height: 300px;
 }
 
+#skeleton_list .user-name span  {
+  width: 100%;
+  margin: 0 auto 0 auto;
+  text-align: center;
+  display: inline-block;
+}
+
 @media (max-width: 567px) {
   #skeleton_list .user-name  {
-    height: 100px;
+    height: auto;
   }
 }
 
