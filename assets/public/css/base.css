@@ -217,6 +217,8 @@ th {
 #main_box  {
   padding-top: 15px;
   margin-bottom: 50px;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 #skeleton_list .user-name  {
