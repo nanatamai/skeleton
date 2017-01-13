@@ -223,10 +223,19 @@ th {
 
 #skeleton_list .user-name  {
   height: 300px;
+  position: relative;
+  background-image: url("css_images/user_icon.png");
+  background-repeat: no-repeat;
+  background-position: center 30px;
 }
 
 #skeleton_list .user-name span  {
   width: 70%;
+  position: absolute;
+  top: 82%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%); /* Safari用 */
+  transform: translate(-50%, -50%);
   margin: 0 auto 0 auto;
   padding: 8px 10px 8px 10px;
   background-color: #7cb822;

@@ -637,10 +637,12 @@ background-color:transparent;
 
 #contents .col-sm-2 {
   padding-right: 0;
+  padding-left: 25px;
 }
 
 #contents .col-sm-10 {
   padding-left: 0;
+  padding-right: 25px;
 }
 
 @media (max-width: 767px) {
