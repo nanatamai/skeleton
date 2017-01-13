@@ -569,6 +569,7 @@ background-color:transparent;
 #breadcrumb_box  {
   width: 100%;
   margin: 0 0 0 0;
+  border-top: 6px solid #82be28;
   background-color: #f4f4f4;
 }
 
