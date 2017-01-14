@@ -2,7 +2,7 @@
 <html>
     <header>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <title>スケルトン共通情報</title>
+        <title>スケルトングループ表示</title>
         <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
         <script src="/script/bootstrap.min.js"></script>
         <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.min.js"></script>
@@ -22,7 +22,6 @@
         <link rel="stylesheet" href="/css/base.css" type="text/css"/>
         <link rel="stylesheet" type="text/css" href="/css/style.css" media="all">
         <link rel="stylesheet" type="text/css" href="/css/bottom_page.css" media="all">
-
     </header>
 
     <body>
@@ -48,42 +47,13 @@
         </div>
 
         <div class="bottom_contents">
-            <h2 class="crudframe_ttl">スケルトン共通情報</h2>
-            <div class="btn_box"><label id="newRecordBtn" class="btn btn-warning">新規作成</label></div>
+            <h2 class="crudframe_ttl">スケルトングループ表示</h2>
 
             <div id="datalist"></div>
         </div>
 
-        <div id="inputForm" style="display: none;">
-            <form method="post" id="basic_form">
-                <div class="form-group">
-                    <label for="data.id" class=".confirm-message">ID：</label>
-                    <input type="text" name="data.id" class="form-control" placeholder="IDは自動割当されます" readonly />
-                </div>
-                <div class="form-group">
-                    <label for="data.skeleton_id">スケルトン：</label>
-                    <select name="data.skeleton_id" class="form-control"></select>
-                </div>
-                <div class="form-group">
-                    <label for="data.skeleton_info">スケルトンメタ名：</label>
-                    <input type="text" name="data.skeleton_info" class="form-control" placeholder="スケルトンメタ名" data-validation-engine="validate[required]" />
-                </div>
-            </form>
-            <form method="post" id="json_form">
-                <div class="form-group">
-                    <label for="data.data_id">データID：</label>
-                    <input type="text" name="data.data_id" class="form-control" placeholder="データID" data-validation-engine="validate[required]" />
-                </div>
-                <div class="form-group">
-                    <label for="data.planting_date">定植日：</label>
-                    <input type="text" name="data.planting_date" data-validation-engine="validate[required]" class="datetimepicker form-control" />
-                </div>
-                <div class="form-group">
-                    <label for="data.cultivation_density">栽培密度：</label>
-                    <input type="text" name="data.cultivation_density" class="form-control" placeholder="栽培密度" data-validation-engine="validate[required,custom[number]]" />
-                </div>
-
-            </form>
+        <div id="junp_top">
+            <p><a href="#page_top"><img src="/images/page_top.png" alt="ページトップ" class="img-responsive"></a></p>
         </div>
 
         <div id="footer">
@@ -111,10 +81,10 @@
 
         <script src="/script/oidc.js"></script>
         <script src="/script/oidc_setting.js"></script>
-
+        
         <script language="JavaScript">
 
-            var api_url = "http://localhost:1234/api/skeleton_meta";
+            var api_url = "http://localhost:1234/api/auth_group";
 
             function SetColumn(json) {
 
@@ -123,10 +93,8 @@
                     data:json.result,
                     schema: [
                         {"header":"ID", "key":"id"},
-                        {"header":"skeleton id", "key":"skeleton_id", "hide": true},
-                        {"header":"スケルトン名(ID)", "key":"skeleton_name", "template":"{{skeleton_name}} ({{skeleton_id}})"},
-                        {"header":"スケルトンメタ名", "key":"skeleton_info"},
-
+                        {"header":"group name", "key":"group_name", "hide": true},
+                        {"header":"グループ名", "key":"group_name"},
                         {"header":"操作", 
                          "template":'<a href="' + api_url + '/{{id}}" class="crud_read_link">詳細</a>' + " | " +
                                     '<a href="' + api_url + '/{{id}}" class="crud_del_link">削除</a>'
@@ -135,24 +103,9 @@
                 });
             }
 
-            function CreateFormData() {
-
-                var token = oidc.GetToken();
-
-                var basic_array = $("#basic_form").serializeArray();
-                var json_data = ($("#json_form").serializeArray());
-
-                basic_array.push({"name":"data.meta_data","value":JSON.stringify(oidc.SerializeArray2PostData(json_data, "data."))});
-                basic_array.push({"name":"data.user_id","value":token["user_id"]});
-                basic_array.push({"name":"scope","value":"user." + token["user_id"]});
-
-                return oidc.SerializeArray2PostData(basic_array);
-            }
-
             (function ($) {
                 // onLoad
                 $(function () {
-                    
 
                 });
             })(jQuery);

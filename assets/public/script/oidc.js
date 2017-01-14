@@ -50,12 +50,14 @@ OidcController.prototype = {
         if(this.AccessTokenCheck()){
             $("#noLoginMenu").toggle(false);
             $("#loginMenu").toggle(true);
+            $("#logoutBtn").toggle(true);
         } else {
             if(location.pathname != "/" && location.pathname != "/index.html") {
                 window.location.href = "/";
             } else {
                 $("#noLoginMenu").toggle(true);
                 $("#loginMenu").toggle(false);
+                $("#logoutBtn").toggle(false);
             }
             
         }
@@ -83,6 +85,12 @@ OidcController.prototype = {
             } else {
                 ret = false;
             }
+        }
+
+        if(!ret) {
+            this.strage.removeItem(this.defaultOptions["client_id"]);
+
+            window.location.href = "/";
         }
 
         return ret;
@@ -402,6 +410,7 @@ OidcController.prototype = {
 
             $("#noLoginMenu").toggle(!showMenu);
             $("#loginMenu").toggle(showMenu);
+            $("#logoutBtn").toggle(showMenu);
             
             // ログイン時にページ表示
             $("#loginTopPage").trigger("click");

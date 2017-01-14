@@ -34,9 +34,11 @@
         if(oidc.AccessTokenCheck()){
             $("#noLoginMenu").toggle(false);
             $("#loginMenu").toggle(true);
+            $("#logoutBtn").toggle(true);
         } else {
             $("#noLoginMenu").toggle(true);
             $("#loginMenu").toggle(false);
+            $("#logoutBtn").toggle(false);
             
         }
 

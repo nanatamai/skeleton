@@ -120,7 +120,8 @@
             $input_form.dialog({
                 modal: true,
                 title: "新規作成",
-                width: "1000px",
+                height: "auto",
+                width: "auto",
                 buttons: {
                     "キャンセル": function() {
                         $(this).dialog("close");
@@ -193,6 +194,8 @@
 
                 $input_form.dialog({
                     title: "詳細",
+                    height: "auto",
+                    width: "auto",
                     buttons: {},
                 });
 
@@ -233,6 +236,14 @@
                         $(event.target).remove();
                 },
             });
+
+            return false;
+        });
+
+        $("#logoutBtn").click(function() {
+            oidc.strage.removeItem(oidc.defaultOptions["client_id"]);
+
+            window.location.href = "/";
 
             return false;
         });
