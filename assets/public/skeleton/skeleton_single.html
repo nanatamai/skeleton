@@ -73,17 +73,18 @@
                         "apiUrl": "http://localhost:1234/api/skeleton_data_meta",
                         "configFile": "config.json",
                         "baseFile": "single.json.js",
-                        "commentFile": "comment.json.js",
-                        "commentLinkFile": "index.html",
+//                        "commentFile": "comment.json.js",
+//                        "commentLinkFile": "index.html",
                         "size": { "width": 270, "height": 310 },
                         "canvasSave": true,    // デバッグ用、canvas保存ボタンを表示
-                        "skeleton_id": 19,
+//                        "skeleton_id": 19,
                     });
 
+                    var url_param = skeleton.getUrlParams();
+
                     skeleton.draw($("#single"), {
-                        "data": [
-                            "2",
-                        ],
+                        "skeleton_id": url_param["skeleton_id"],
+                        "data": url_param["skeleton_data_id"].split(","),
                     });
 
                 });

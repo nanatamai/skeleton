@@ -89,10 +89,25 @@ function GrowthSkeletonController(options) {
         "size": { "width": 300, "height": 350 },
         "title": "",
         "titleAppend": "",
+        "baseFileFlag": false,
+        "commentFlag": false,
+        "comment": {
+            commentText: "",
+            commentDate: "",
+            url: "",
+        },
+        "historieFlag": false,
+        "skeleton_id": 0,
         "data": [],
         "dataJson": [],
+        "date_move": [0],
         "overlay": [],
         "overlayJson": [],
+        "overlay_date_move": [0],
+
+        "useIdealFlag": false,
+        "useSkeletonIdeal": false,
+        "useOverlayIdeal": false,
 
         // for debug
         "canvasSave": false,
@@ -105,9 +120,16 @@ function GrowthSkeletonController(options) {
         "comment": {}
     };
     this.baseData = [];
+    this.ideal = [];
+    this.idealJson = [];
 };
 GrowthSkeletonController.prototype = {
 
+    // 
+    setDefaultOption: function(options) {
+
+        this.defaultOptions = $.extend(true, this.defaultOptions, options);
+    },
     // オプション設定
     set: function (selector, options) {
 
@@ -151,13 +173,34 @@ GrowthSkeletonController.prototype = {
 
             marge_option.config = data;
 
-            api_url = this.apiUrl + "/" + marge_option.data.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+            // 理想個体を使用するか
+            var api_url = "";
+            if(marge_option.useSkeletonIdeal) {
+                if(this.ideal.length > 0) {
+                    api_url = this.apiUrl + "/" + this.ideal.join(",") + "/" + 0 + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+                } else {
+                    return false;
+                }
+            } else {
+                api_url = this.apiUrl + "/" + marge_option.data.join(",") + "/" + marge_option.date_move.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+            }
+            
 
             oidc.GetApiJson(api_url, function(data_json, thisInstance){
 
                 $.each(data_json["result"], function(i, val) {
 
                     var parseData = JSON.parse(val["assay_data"]);
+
+                    // コメント用データ作成
+                    marge_option.comment.commentText = parseData["comment"];
+                    marge_option.comment.commentDate = val["assay_date"];
+                    marge_option.comment.url = location.pathname + "?skeleton_id=" + marge_option.skeleton_id + "&skeleton_data_id=" + val["id"];
+
+                    // 理想個体使用フラグ
+                    if(marge_option.useIdealFlag) {
+                        thisInstance.ideal = parseData["ideal_id"].split(",");
+                    }
 
                     thisInstance.inquiryItemsArray2Hash(parseData, val);
 
@@ -167,7 +210,12 @@ GrowthSkeletonController.prototype = {
                 // overlay
                 if(marge_option.overlay.length > 0) {
 
-                    overlay_url = thisInstance.apiUrl + "/" + marge_option.overlay.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+                    var overlay_url = "";
+                    if(marge_option.useSkeletonIdeal) {
+                        overlay_url = this.apiUrl + "/" + this.ideal.join(",") + "/" + 0 + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+                    } else {
+                        overlay_url = thisInstance.apiUrl + "/" + marge_option.overlay.join(",") + "/" + marge_option.overlay_date_move.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+                    }
 
                     oidc.GetApiJson(overlay_url, function(overlay_json, thisInstance){
 
@@ -180,14 +228,20 @@ GrowthSkeletonController.prototype = {
                             Array.prototype.push.apply(marge_option.overlayJson, parseData["assay_array"]);
                         });
 
-                        thisInstance.loadJsonComplete(marge_option);
+                        if(marge_option.dataJson.length || marge_option.overlayJson) {
+                            thisInstance.loadJsonComplete(marge_option);
+                        }
                     }, thisInstance);
                 } else {
 
-                    thisInstance.loadJsonComplete(marge_option);
+                    if(marge_option.dataJson.length) {
+                        thisInstance.loadJsonComplete(marge_option);
+                    }
                 }
 
-                thisInstance.setToolTip(marge_option.selector);
+                if(marge_option.dataJson.length || marge_option.overlayJson) {
+                    thisInstance.setToolTip(marge_option.selector);
+                }
             }, this);
             
         }).fail(function(data) {
@@ -371,10 +425,10 @@ GrowthSkeletonController.prototype = {
 
         $.each($date_box.find("[data-skeletondataid]"), function(j, skeleton_box) {
 
-            var marge_option = $.extend(true, {
+            var marge_option = $.extend(true, thisInstance.defaultOptions, {
                 skeleton_id: $(skeleton_box).data("skeletonid"),
                 data: [$(skeleton_box).data("skeletondataid")],
-            }, thisInstance.defaultOptions);
+            });
 
             thisInstance.draw($(skeleton_box), marge_option, this);
 
@@ -384,6 +438,19 @@ GrowthSkeletonController.prototype = {
             $(skeleton_box).removeAttr("data-skeletondataid");
         });
 
+    },
+    getUrlParams: function() {
+
+        params = location.href.split("?");
+        paramms = params.length>1&&params[1].split("&");
+        var paramMap = {};
+
+        for ( i = 0; i < paramms.length; i++ ) {
+            vl = paramms[i].split("=");
+            paramMap[vl[0]] = vl[1];
+        }
+
+        return paramMap;
     },
     // オプションをインスタンス変数化
     setInstanceValiable: function(options, key) {
@@ -575,7 +642,7 @@ GrowthSkeletonController.prototype = {
 
         var thisInstance = this;
 
-        api_url = thisInstance.apiUrl + "/" + this.baseFile + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+        api_url = thisInstance.apiUrl + "/" + this.baseFile + "/0?scope=skeleton." + marge_option.skeleton_id + ".read";
 
         oidc.GetApiJson(api_url, function(data_json){
 
@@ -726,6 +793,16 @@ GrowthSkeletonController.prototype = {
 
         // configJsonの値をミリ単位へ
         this.configJsonUnitConversion(option.config)
+
+        if(option.baseFileFlag) {
+            this.insertBaseData(option.dataJson[0]);
+        }
+        if(option.commentFlag) {
+            this.addCommentHtml(option.comment, 0);
+        }
+        if(option.historieFlag) {
+            this.addCommentHtml(option.comment, 1);
+        }
 
         var title = this.titleSeach(option);
 
@@ -1143,7 +1220,7 @@ GrowthSkeletonController.prototype = {
             if (thisInstance.validateJson(jsonPath, json, thisInstance.jsonSchema.comment)) {
 
 
-                thisInstance.addCommentHtml(json, commentIndex, thisInstance.histories[commentIndex - 1]);
+//                thisInstance.addCommentHtml(json, commentIndex, thisInstance.histories[commentIndex - 1]);
 
                 // 再起呼び出し
                 thisInstance.loadJsonpComment(commentIndex + 1);
@@ -1156,7 +1233,7 @@ GrowthSkeletonController.prototype = {
         });;
     },
     // コメントを追加
-    addCommentHtml: function (json, commentIndex, url) {
+    addCommentHtml: function (json, commentIndex) {
 
         var $commentArea = $("#new_comment_area");
 
@@ -1165,7 +1242,7 @@ GrowthSkeletonController.prototype = {
             $commentArea = $("#old_comment_area");
             $commentArea = $("<div class=\"comment\">").appendTo($commentArea);
 
-            json["url"] = url + (url.slice(-1) == "/" ? "" : "/") + this.commentLinkFile;
+//            json["url"] = url + (url.slice(-1) == "/" ? "" : "/") + this.commentLinkFile;
         } else {
 
             json["newFlag"] = true;

@@ -96,7 +96,8 @@
                         {"header":"group name", "key":"group_name", "hide": true},
                         {"header":"グループ名", "key":"group_name"},
                         {"header":"操作", 
-                         "template":'<a href="' + api_url + '/{{id}}" class="crud_read_link">詳細</a>' + " | " +
+                         "template":'<a href="' + '/skeleton/skeleton_group.html?group_id={{id}}" target="_blank">グループ表示</a>' + " | " +
+                                    '<a href="' + api_url + '/{{id}}" class="crud_read_link">詳細</a>' + " | " +
                                     '<a href="' + api_url + '/{{id}}" class="crud_del_link">削除</a>'
                         },
                     ],

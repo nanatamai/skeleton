@@ -37,7 +37,7 @@
                         delete token["expires_string"]; 
 
                         // strageへ保存
-                        sessionStorage.setItem(client_id, JSON.stringify(token));
+                        localStorage.setItem(client_id, JSON.stringify(token));
 
                         post = token.access_token;
                     }

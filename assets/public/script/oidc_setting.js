@@ -9,7 +9,7 @@ var oidc = new OidcController({
         "token_session_endpoint": "http://localhost:1234/oidc/token",
         "state": "some-random-state-foobar",
         "nonce": "abcdefg-hijklmn",
-        "strage": sessionStorage,
+        "strage": localStorage,
     });
 
 (function ($) {

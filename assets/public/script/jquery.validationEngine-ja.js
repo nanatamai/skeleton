@@ -137,7 +137,11 @@
                 },
                 "validate2fields": {
                     "alertText": "* 『HELLO』と入力してください"
-                }
+                },
+                "onlyID": {
+                    "regex": /^[0-9]+,?[0-9]+$/,
+                    "alertText": "* IDはカンマ(,)区切りで入力してください"
+                },
             };
             
         }

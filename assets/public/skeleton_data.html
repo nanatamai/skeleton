@@ -86,6 +86,10 @@
                     <label for="data.comment">コメント：</label>
                     <input type="text" name="data.comment" data-validation-engine="validate[required]" class="form-control" placeholder="コメント" />
                 </div>
+                <div class="form-group">
+                    <label for="data.ideal_id">理想個体ID</label>
+                    <input type="text" name="data.ideal_id" data-validation-engine="validate[custom[onlyID]]" class="form-control" placeholder="理想個体ID" />
+                </div>
             </form>
 
             <form id="repeater">
@@ -202,10 +206,12 @@
                         {"header":"skeleton id", "key":"skeleton_id", "hide": true},
                         {"header":"スケルトン名(ID)", "key":"skeleton_name", "template":"{{skeleton_name}} ({{skeleton_id}})"},
                         {"header":"skeleton meta id", "key":"skeleton_meta_id", "hide": true},
-                        {"header":"スケルトンメタ(ID)", "key":"skeleton_info", "template":"{{skeleton_info}} ({{skeleton_meta_id}})"},
+                        {"header":"スケルトン共通情報(ID)", "key":"skeleton_info", "template":"{{skeleton_info}} ({{skeleton_meta_id}})"},
                         {"header":"日付", "key":"assay_date"},
                         {"header":"操作", 
-                         "template":'<a href="' + api_url + '/{{id}}" class="crud_read_link">詳細</a>' + " | " +
+                         "template":'<a href="' + '/skeleton/skeleton_multi.html?skeleton_id={{skeleton_id}}&skeleton_data_id={{id}}" target="_blank">レポート</a>' + " | " +
+                                    '<a href="' + '/skeleton/skeleton_single.html?skeleton_id={{skeleton_id}}&skeleton_data_id={{id}}" target="_blank">単独表示</a>' + " | " +
+                                    '<a href="' + api_url + '/{{id}}" class="crud_read_link">詳細</a>' + " | " +
                                     '<a href="' + api_url + '/{{id}}" class="crud_del_link">削除</a>'
                         },
                     ],

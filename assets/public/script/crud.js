@@ -37,7 +37,7 @@
             promptPosition: "inline",
             showArrowOnRadioAndCheckbox: true,
             focusFirstField: false,
-            scroll: false
+            scroll: false,
         });
         if($repeater_form.length > 0) {
             $repeater_form.validationEngine({

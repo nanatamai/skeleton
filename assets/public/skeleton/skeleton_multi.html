@@ -9,6 +9,7 @@
   <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" />
   <title>生育レポート - 生育スケルトン</title>
 
+  <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/themes/ui-lightness/jquery-ui.css">
   <link rel="stylesheet" type="text/css" href="/skeletonlib/css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="/skeletonlib/css/magnific-popup.min.css" media="all" />
   <link rel="stylesheet" type="text/css" href="/skeletonlib/css/blueimp-gallery.min.css" />
@@ -18,7 +19,8 @@
   <link rel="stylesheet" type="text/css" href="/skeletonlib/css/jquery.qtip.min.css" />
   <link rel="shortcut icon" href="/skeletonlib/img/favicon.ico">
 
-  <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js" type="text/javascript"></script>
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
+  <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.min.js"></script>
   <script src="/skeletonlib/scripts/jsen.min.js" type="text/javascript"></script>
   <script src="/skeletonlib/scripts/jcanvas.min.js" type="text/javascript"></script>
   <script src="/skeletonlib/scripts/jquery.qtip.min.js" type="text/javascript"></script>
@@ -45,89 +47,80 @@
         var skeleton = new GrowthSkeletonController({
             "apiUrl": "http://localhost:1234/api/skeleton_data_meta",
             "configFile": "config.json",
-            "baseFile": "6",
             "commentFile": "comment.json.js",
             "commentLinkFile": "index.html",
             "size": { "width": 270, "height": 310 },
             "canvasSave": true,    // デバッグ用、canvas保存ボタンを表示
-            "skeleton_id": 19,
+//            "skeleton_id": 19,
+        });
+
+        var url_param = skeleton.getUrlParams();
+
+        skeleton.setDefaultOption({
+          "skeleton_id": url_param["skeleton_id"],
         });
 
         // 生育状態の推移1
         skeleton.draw($("#history1"), {
           "size": { "width": 190, "height": 219 },
-          "data": [
-            "3",
-          ]
+          "data": url_param["skeleton_data_id"].split(","),
+          "baseFileFlag": true,
+          "commentFlag": true,
+          "useIdealFlag": true,
         });
         // 生育状態の推移2
         skeleton.draw($("#history2"), {
           "size": { "width": 190, "height": 219 },
-          "data": [
-            "4",
-          ]
+          "data": url_param["skeleton_data_id"].split(","),
+          "date_move": [-1],
+          "historieFlag": true,
         });
         // 生育状態の推移3
         skeleton.draw($("#history3"), {
           "size": { "width": 190, "height": 219 },
-          "data": [
-            "5",
-          ]
+          "data": url_param["skeleton_data_id"].split(","),
+          "date_move": [-2],
+          "historieFlag": true,
         });
          // 生育状態の推移4
         skeleton.draw($("#history4"), {
           "size": { "width": 190, "height": 219 },
-          "data": [
-            "6",
-          ]
+          "data": url_param["skeleton_data_id"].split(","),
+          "date_move": [-3],
+          "historieFlag": true,
         });
         // 理想個体
         skeleton.draw($("#ideal"), {
           "title": "理想個体",
           "size": { "width": 190, "height": 219 },
-          "data": [
-            "7", "8",
-          ]
+          "useSkeletonIdeal": true,
         });
 
         // 先週との比較
         skeleton.draw($("#lastweek"), {
           "titleAppend": "先週の生育状態との比較",
-          "data": [
-            "6"
-          ],
-          "overlay": [
-            "5"
-          ]
+          "data": url_param["skeleton_data_id"].split(","),
+          "overlay": url_param["skeleton_data_id"].split(","),
+          "overlay_date_move": [-1],
         });
         // これまでとの比較
         skeleton.draw($("#skeleton02"), {
           "titleAppend": "これまでの生育状態との比較",
-          "data": [
-            "6"
-          ],
-          "overlay": [
-            "5",
-            "4",
-            "3"
-          ]
+          "data": url_param["skeleton_data_id"].split(","),
+          "overlay": url_param["skeleton_data_id"].split(","),
+          "overlay_date_move": [-1, -2, -3],
         });
         // 理想個体との比較
         skeleton.draw($("#skeleton03"), {
           "titleAppend": "理想個体と比較",
-          "data": [
-            "6"
-          ],
-          "overlay": [
-            "7",
-            "8"
-          ]
+          "data": url_param["skeleton_data_id"].split(","),
+          "useOverlayIdeal": true,
         });
 
         // 基本データ
-        skeleton.loadBaseFile();
+//        skeleton.loadBaseFile();
         // コメント
-        skeleton.loadJsonpComment(0);
+//        skeleton.loadJsonpComment(0);
 
         // 描画
 //        skeleton.draw();
