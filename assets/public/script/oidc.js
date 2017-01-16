@@ -15,6 +15,7 @@ function OidcController(options) {
         "authorization_endpoint": "",
         "userinfo_endpoint": "",
         "token_session_endpoint": "",
+        "errorLocation": "/",
     }, options);
 
 };
@@ -53,7 +54,10 @@ OidcController.prototype = {
             $("#logoutBtn").toggle(true);
         } else {
             if(location.pathname != "/" && location.pathname != "/index.html") {
-                window.location.href = "/";
+
+                if(this.defaultOptions.errorLocation) {
+                    window.location.href = this.defaultOptions.errorLocation;
+                }
             } else {
                 $("#noLoginMenu").toggle(true);
                 $("#loginMenu").toggle(false);
@@ -90,7 +94,9 @@ OidcController.prototype = {
         if(!ret) {
             this.strage.removeItem(this.defaultOptions["client_id"]);
 
-            window.location.href = "/";
+            if(this.defaultOptions.errorLocation) {
+                window.location.href = this.defaultOptions.errorLocation;
+            }
         }
 
         return ret;
@@ -403,6 +409,7 @@ OidcController.prototype = {
             if(event.data != "error") {
                 
                 showMenu = true;
+                $("#errordiv").html("");
             } else {
 
                 $("#errordiv").html("エラーが発生しました。ログインをやり直してください。");
@@ -411,12 +418,15 @@ OidcController.prototype = {
             $("#noLoginMenu").toggle(!showMenu);
             $("#loginMenu").toggle(showMenu);
             $("#logoutBtn").toggle(showMenu);
-            
-            // ログイン時にページ表示
-            $("#loginTopPage").trigger("click");
 
             // loginダイアログを閉じる
             $("#loginWindow").dialog("close");
+
+            // ログイン時にページ表示
+            var loginTop = $("#loginTopPage").attr("href");
+            if(loginTop) {
+                location.href = loginTop;
+            }
         }
 
         

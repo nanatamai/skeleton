@@ -16,7 +16,12 @@
         var crud_del_link = ".crud_del_link";
 
         if(!oidc.AccessTokenCheck()){
-            window.location.href = "/";
+
+            debugger;
+
+            if(oidc.defaultOptions.errorLocation) {
+                window.location.href = "/";
+            }
             return;
         }
 

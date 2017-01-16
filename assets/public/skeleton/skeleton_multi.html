@@ -38,6 +38,9 @@
   <script src="/script/oidc.js"></script>
   <script src="/script/oidc_setting.js"></script>
   <script type="text/javascript">
+
+    var skeletonDraw = function(){};
+
     (function ($) {
 
       // ページ読み込み時の処理
@@ -46,11 +49,11 @@
         // デフォルト設定
         var skeleton = new GrowthSkeletonController({
             "apiUrl": "http://localhost:1234/api/skeleton_data_meta",
-            "configFile": "config.json",
-            "commentFile": "comment.json.js",
-            "commentLinkFile": "index.html",
+//            "configFile": "config.json",
+//            "commentFile": "comment.json.js",
+//            "commentLinkFile": "index.html",
             "size": { "width": 270, "height": 310 },
-            "canvasSave": true,    // デバッグ用、canvas保存ボタンを表示
+//            "canvasSave": true,    // デバッグ用、canvas保存ボタンを表示
 //            "skeleton_id": 19,
         });
 
@@ -60,76 +63,69 @@
           "skeleton_id": url_param["skeleton_id"],
         });
 
-        // 生育状態の推移1
-        skeleton.draw($("#history1"), {
-          "size": { "width": 190, "height": 219 },
-          "data": url_param["skeleton_data_id"].split(","),
-          "baseFileFlag": true,
-          "commentFlag": true,
-          "useIdealFlag": true,
-        });
-        // 生育状態の推移2
-        skeleton.draw($("#history2"), {
-          "size": { "width": 190, "height": 219 },
-          "data": url_param["skeleton_data_id"].split(","),
-          "date_move": [-1],
-          "historieFlag": true,
-        });
-        // 生育状態の推移3
-        skeleton.draw($("#history3"), {
-          "size": { "width": 190, "height": 219 },
-          "data": url_param["skeleton_data_id"].split(","),
-          "date_move": [-2],
-          "historieFlag": true,
-        });
-         // 生育状態の推移4
-        skeleton.draw($("#history4"), {
-          "size": { "width": 190, "height": 219 },
-          "data": url_param["skeleton_data_id"].split(","),
-          "date_move": [-3],
-          "historieFlag": true,
-        });
-        // 理想個体
-        skeleton.draw($("#ideal"), {
-          "title": "理想個体",
-          "size": { "width": 190, "height": 219 },
-          "useSkeletonIdeal": true,
-        });
+        skeletonDraw = function() {
+          // 生育状態の推移1
+          skeleton.draw($("#history1"), {
+            "size": { "width": 190, "height": 219 },
+            "data": url_param["skeleton_data_id"].split(","),
+            "baseFileFlag": true,
+            "commentFlag": true,
+            "useIdealFlag": true,
+          });
+          // 生育状態の推移2
+          skeleton.draw($("#history2"), {
+            "size": { "width": 190, "height": 219 },
+            "data": url_param["skeleton_data_id"].split(","),
+            "date_move": [-1],
+            "historieFlag": true,
+          });
+          // 生育状態の推移3
+          skeleton.draw($("#history3"), {
+            "size": { "width": 190, "height": 219 },
+            "data": url_param["skeleton_data_id"].split(","),
+            "date_move": [-2],
+            "historieFlag": true,
+          });
+          // 生育状態の推移4
+          skeleton.draw($("#history4"), {
+            "size": { "width": 190, "height": 219 },
+            "data": url_param["skeleton_data_id"].split(","),
+            "date_move": [-3],
+            "historieFlag": true,
+          });
+          // 理想個体
+          skeleton.draw($("#ideal"), {
+            "title": "理想個体",
+            "size": { "width": 190, "height": 219 },
+            "useSkeletonIdeal": true,
+          });
 
-        // 先週との比較
-        skeleton.draw($("#lastweek"), {
-          "titleAppend": "先週の生育状態との比較",
-          "data": url_param["skeleton_data_id"].split(","),
-          "overlay": url_param["skeleton_data_id"].split(","),
-          "overlay_date_move": [-1],
-        });
-        // これまでとの比較
-        skeleton.draw($("#skeleton02"), {
-          "titleAppend": "これまでの生育状態との比較",
-          "data": url_param["skeleton_data_id"].split(","),
-          "overlay": url_param["skeleton_data_id"].split(","),
-          "overlay_date_move": [-1, -2, -3],
-        });
-        // 理想個体との比較
-        skeleton.draw($("#skeleton03"), {
-          "titleAppend": "理想個体と比較",
-          "data": url_param["skeleton_data_id"].split(","),
-          "useOverlayIdeal": true,
-        });
-
-        // 基本データ
-//        skeleton.loadBaseFile();
-        // コメント
-//        skeleton.loadJsonpComment(0);
-
-        // 描画
-//        skeleton.draw();
-
+          // 先週との比較
+          skeleton.draw($("#lastweek"), {
+            "titleAppend": "先週の生育状態との比較",
+            "data": url_param["skeleton_data_id"].split(","),
+            "overlay": url_param["skeleton_data_id"].split(","),
+            "overlay_date_move": [-1],
+          });
+          // これまでとの比較
+          skeleton.draw($("#skeleton02"), {
+            "titleAppend": "これまでの生育状態との比較",
+            "data": url_param["skeleton_data_id"].split(","),
+            "overlay": url_param["skeleton_data_id"].split(","),
+            "overlay_date_move": [-1, -2, -3],
+          });
+          // 理想個体との比較
+          skeleton.draw($("#skeleton03"), {
+            "titleAppend": "理想個体と比較",
+            "data": url_param["skeleton_data_id"].split(","),
+            "useOverlayIdeal": true,
+          });
+        };
       });
     })(jQuery);
 
-
   </script>
+  <script src="/script/login_simple.js"></script>
 
   <style type="text/css">
     <!--
@@ -160,7 +156,7 @@
     <div class="navbar-inner">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/"><img src="/skeletonlib/img/logo2.png" class="img-responsive" alt="生育スケルトン"></a>
+          <a class="navbar-brand" href="#"><img src="/skeletonlib/img/logo2.png" class="img-responsive" alt="生育スケルトン"></a>
         </div>
         <ul class="nav navbar-nav navbar-right nav_skeleton">
           <p>週1回のテープメジャーの計測データから、樹勢の直感的な把握と生育状態変化の評価を実現します。</p>
@@ -169,16 +165,19 @@
     </div>
   </nav>
 
+  <!--  login dialog用div要素 -->
+  <div id="loginWindow" style="display: none;"></div>
+
   <div id="breadcrumb_box">
     <div class="container">
       <ol class="breadcrumb growth_skeleton">
-        <li><a href="../">生育レポート</a></li>
+        <li><a href="#">生育レポート</a></li>
         <li class="active">ミニトマト「プチキュア」</li>
       </ol>
     </div>
   </div><!-- breadcrumb_boxここまで -->
 
-  <div id="contents" class="contents_growth_skeleton">
+  <div id="contents" class="contents_growth_skeleton" style="display: none;">
 
     <div class="container">
 

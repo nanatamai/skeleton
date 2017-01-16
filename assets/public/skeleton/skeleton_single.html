@@ -55,6 +55,9 @@
 
     <body>
 
+        <!--  login dialog用div要素 -->
+        <div id="loginWindow" style="display: none;"></div>
+
         <div id="single">
             <div class="growth-draw-area"></div>
         </div>
@@ -63,6 +66,8 @@
         <script src="/script/oidc_setting.js"></script>
 
         <script language="JavaScript">
+
+            var skeletonDraw = function(){};
 
             (function ($) {
                 // onLoad
@@ -82,13 +87,16 @@
 
                     var url_param = skeleton.getUrlParams();
 
-                    skeleton.draw($("#single"), {
-                        "skeleton_id": url_param["skeleton_id"],
-                        "data": url_param["skeleton_data_id"].split(","),
-                    });
+                    skeletonDraw = function() {
+                        skeleton.draw($("#single"), {
+                            "skeleton_id": url_param["skeleton_id"],
+                            "data": url_param["skeleton_data_id"].split(","),
+                        });
+                    };
 
                 });
             })(jQuery);
 	    </script>
+        <script src="/script/login_simple.js"></script>
     </body>
 </html> 

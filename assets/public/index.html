@@ -43,8 +43,8 @@
         </div>
         <div id="loginMenu" style="display: none;">
             <ul class="menu nav nav-pills">
-                <li><a href="/skeleton_meta.html" id="loginTopPage">スケルトン共通情報</a></li>
-                <li><a href="/skeleton_data.html">スケルトンデータ登録</a></li>
+                <li><a href="/skeleton_meta.html">スケルトン共通情報</a></li>
+                <li><a href="/skeleton_data.html" id="loginTopPage">スケルトンデータ登録</a></li>
                 <li><a href="/skeleton_group.html">スケルトングループ表示</a></li>
             </ul>
         </div>
@@ -125,8 +125,12 @@
         
         <script language="JavaScript">
 
-//            var auth_url = {{.AuthURL}};
-            // openid privider
+            $("#logoutBtn").click(function() {
+                oidc.strage.removeItem(oidc.defaultOptions["client_id"]);
+                window.location.href = "/";
+
+                return false;
+            });
             
             
 	    </script>

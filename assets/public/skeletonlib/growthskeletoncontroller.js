@@ -5,10 +5,10 @@
     // ページ読み込み時の処理
     $(function () {
 
-        if(!oidc.AccessTokenCheck()){
-            window.location.href = "/";
-            return;
-        }
+//        if(!oidc.AccessTokenCheck()){
+//            window.location.href = "/";
+//            return;
+//        }
 
         // cookieをJSONとして扱う
         $.cookie.json = true;

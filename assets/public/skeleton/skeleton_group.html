@@ -77,6 +77,9 @@
         <script src="/script/oidc.js"></script>
         <script src="/script/oidc_setting.js"></script>
         <script type="text/javascript">
+
+            var skeletonDraw = function(){};
+
             (function ($) {
 
             // ページ読み込み時の処理
@@ -91,11 +94,13 @@
                         "toolTip": true,
                     });
 
-                    // 生育状態
-                    skeleton.groupDraw($("#skeleton_list"), $("#skeleton_carousel"), {
-                        "apiGroupUrl": "http://localhost:1234/api/auth_group",
-                        "group": 1,
-                    });
+                    skeletonDraw = function() {
+                        // 生育状態
+                        skeleton.groupDraw($("#skeleton_list"), $("#skeleton_carousel"), {
+                            "apiGroupUrl": "http://localhost:1234/api/auth_group",
+                            "group": 1,
+                        });
+                    };
 
 
                     // 描画
@@ -106,6 +111,7 @@
 
 
         </script>
+        <script src="/script/login_simple.js"></script>
     </head>
 
     <body id="page_top" data-offset="86">
@@ -121,6 +127,9 @@
             </div>
             </div>
         </nav>
+
+        <!--  login dialog用div要素 -->
+        <div id="loginWindow" style="display: none;"></div>
 
         <div id="breadcrumb_box">
             <div class="container">
