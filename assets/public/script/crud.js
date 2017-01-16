@@ -17,8 +17,6 @@
 
         if(!oidc.AccessTokenCheck()){
 
-            debugger;
-
             if(oidc.defaultOptions.errorLocation) {
                 window.location.href = "/";
             }
@@ -241,14 +239,6 @@
                         $(event.target).remove();
                 },
             });
-
-            return false;
-        });
-
-        $("#logoutBtn").click(function() {
-            oidc.strage.removeItem(oidc.defaultOptions["client_id"]);
-
-            window.location.href = "/";
 
             return false;
         });

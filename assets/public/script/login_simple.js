@@ -40,10 +40,13 @@
         function AccessTokenCheck() {
             if(oidc.AccessTokenCheck()){
                 $("#contents").toggle(true);
+                $("#logoutBtn").toggle(true);
+                
                 skeletonDraw();
             } else {
                 $('#loginWindow').dialog('open');
                 $("#contents").toggle(false);
+                $("#logoutBtn").toggle(false);
             }
         }
 

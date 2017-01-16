@@ -429,7 +429,14 @@ OidcController.prototype = {
             }
         }
 
-        
+        // ログアウトボタンイベント
+        $("#logoutBtn").click(function() {
+            oidc.strage.removeItem(oidc.defaultOptions["client_id"]);
+
+            window.location.href = "/";
+
+            return false;
+        });
 
     });
 
