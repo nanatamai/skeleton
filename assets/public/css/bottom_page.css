@@ -42,7 +42,8 @@
 }
 
 .bottom_contents {
-  height:100vh;
+  height:auto;
+  min-height: 500px;
   width:95%;
   margin: 25px auto 25px auto;
   display: block;
