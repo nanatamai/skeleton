@@ -94,11 +94,13 @@
                         "toolTip": true,
                     });
 
+                    var url_param = skeleton.getUrlParams();
+
                     skeletonDraw = function() {
                         // 生育状態
                         skeleton.groupDraw($("#skeleton_list"), $("#skeleton_carousel"), {
                             "apiGroupUrl": "http://localhost:1234/api/auth_group",
-                            "group": 1,
+                            "group": url_param["group_id"]
                         });
                     };
 
