@@ -208,11 +208,11 @@ GrowthSkeletonController.prototype = {
                 });
                 
                 // overlay
-                if(marge_option.overlay.length > 0) {
+                if(marge_option.overlay.length > 0 || marge_option.useOverlayIdeal) {
 
                     var overlay_url = "";
-                    if(marge_option.useSkeletonIdeal) {
-                        overlay_url = this.apiUrl + "/" + this.ideal.join(",") + "/" + 0 + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+                    if(marge_option.useOverlayIdeal) {
+                        overlay_url = thisInstance.apiUrl + "/" + thisInstance.ideal.join(",") + "/" + 0 + "?scope=skeleton." + marge_option.skeleton_id + ".read";
                     } else {
                         overlay_url = thisInstance.apiUrl + "/" + marge_option.overlay.join(",") + "/" + marge_option.overlay_date_move.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
                     }
