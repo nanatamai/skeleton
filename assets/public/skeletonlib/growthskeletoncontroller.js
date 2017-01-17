@@ -324,7 +324,7 @@ GrowthSkeletonController.prototype = {
                             skeleton_ids: skeleton_array,
                         });
                     } else {
-                        date_list[date_index].data_ids[i] = skeleton_date["id"];
+                        date_list[date_index].data_ids[i] = skeleton_data["id"];
                         date_list[date_index].skeleton_ids[i] = val.skeleton_id;
                     }
 
