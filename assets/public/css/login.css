@@ -7,6 +7,10 @@ th {
   font-size: small;
 }
 
+#header {
+  z-index: 99;
+}
+
 #crudframe {
   height:100vh;
   width:95%;
