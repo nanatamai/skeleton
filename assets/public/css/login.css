@@ -1,0 +1,126 @@
+iframe {
+  width:100%;
+}
+
+th {
+  white-space: nowrap;
+  font-size: small;
+}
+
+#header {
+  z-index: 99;
+}
+
+#crudframe {
+  height:100vh;
+  width:95%;
+  margin: 25px auto 25px auto;
+  display: block;
+  background-color: white;
+  border-radius: 3px;		/* CSS3草案 */
+	-webkit-border-radius: 3px;	/* Safari,Google Chrome用 */
+	-moz-border-radius: 3px;	/* Firefox用 */
+  border-top: 4px solid #82be28;
+  border-left: 1px solid #d2d6de;
+  border-right: 1px solid #d2d6de;
+  border-bottom: 1px solid #d2d6de;
+}
+
+#iframeLogin {
+  border: none;
+  background-color: white;
+}
+
+.ui-dialog .ui-dialog-titlebar  {
+  padding: 0 0 0 0;
+  text-align: center;
+  color: #aaa;
+  border: none;
+  background-image: none;
+  background-color: #f7f7f7;
+}
+
+.ui-dialog .ui-dialog-title {
+    margin-bottom: 15px;
+    width: 100%;
+    font-size: 18px;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+    top: 30%;
+}
+
+.login_ttl {
+  margin: 0 0 20px 0;
+  padding: 10px 0 10px 0;
+  background-color: #82be28;
+  text-align: center;
+  color: white;
+  font-size: 21px;
+}
+
+.login_info  {
+  margin-bottom: 20px;
+  padding: 0 20px 0 20px;
+}
+
+#login_error  {
+  padding: 0 20px 0 20px;
+  color: #d9534f;
+}
+
+#login_form, #auth_form  {
+  padding: 0 20px 0 20px;
+}
+
+#login_form .btn, #auth_form .btn  {
+  width: 100%;
+  margin-top: 20px;
+  padding: 8px 40px 8px 40px;
+  text-align: center;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    padding: 0.3em 1em 0.5em 1em;
+    text-align: center;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+  width: 100%;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+  margin: 0.5em 0.4em 0.5em 0.4em;
+}
+
+#login_form .form-group input::-webkit-input-placeholder, #inputForm .form-group input::-webkit-input-placeholder  {
+  color: #bcbcbc;
+}
+
+#login_form .form-group input:-moz-placeholder, #inputForm .form-group input:-moz-placeholder  {
+  color: #bcbcbc;
+}
+
+#login_form .form-group input::-moz-placeholder, #inputForm .form-group input::-moz-placeholder  {
+  opacity: 0.42;
+}
+
+#login_form .form-group input:-ms-input-placeholder, #inputForm .form-group input:-ms-input-placeholder  {
+  color: #bcbcbc;
+}
+
+#inputForm .form-group textarea::-webkit-input-placeholder  {
+  color: #bcbcbc;
+}
+
+#inputForm .form-group textarea:-moz-placeholder  {
+  color: #bcbcbc;
+}
+
+#inputForm .form-group textarea::-moz-placeholder  {
+  opacity: 0.42;
+}
+
+#inputForm .form-group textarea:-ms-input-placeholder  {
+  color: #bcbcbc;
+}
