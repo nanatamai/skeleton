@@ -87,7 +87,7 @@
 
                     // デフォルト設定
                     var skeleton = new GrowthSkeletonController({
-                        "apiUrl": "http://localhost:1234/api/skeleton_data_meta",
+                        "apiUrl": "http://skdemo.aoidn.com:1234/api/skeleton_data_meta",
                         "configFile": "config.json",
                         "size": { "width": 180, "height": 225 },
                         "canvasSave": true,    // デバッグ用、canvas保存ボタンを表示
@@ -99,7 +99,7 @@
                     skeletonDraw = function() {
                         // 生育状態
                         skeleton.groupDraw($("#skeleton_list"), $("#skeleton_carousel"), {
-                            "apiGroupUrl": "http://localhost:1234/api/auth_group",
+                            "apiGroupUrl": "http://skdemo.aoidn.com:1234/api/auth_group",
                             "group": url_param["group_id"]
                         });
                     };
