@@ -8,8 +8,8 @@ COPY pdj-rp-skeleton /app
 COPY assets/ /app/assets
 WORKDIR /app
 
-ENV APICONF2="{\"host\": {\"host\": \"https://localhost\", \"port\": 4321}, \"oidc_client\": {\"client_id\": \"rp-skeleton\",\"secret\": \"foobar\", \"scopes\": \"openid, pdjrp-skeleton, offline\", \"redirect_url\": \"http://localhost:4321/callback.html\", \"auth_url\": \"http://pdj-rp-admin:1234/oidc/auth\", \"token_url\": \"http://pdj-rp-admin:1234/oidc/token\"}}"
+ENV APICONF2="{\"host\": {\"host\": \"https://skdemo.aoidn.com\", \"port\": 80}, \"oidc_client\": {\"client_id\": \"rp-skeleton\",\"secret\": \"foobar\", \"scopes\": \"openid, pdjrp-skeleton, offline\", \"redirect_url\": \"http://skdemo.aoidn.com:80/callback.html\", \"auth_url\": \"http://skdemo.aoidn.com:1234/oidc/auth\", \"token_url\": \"http://pdj-rp-admin:1234/oidc/token\"}}"
 
-EXPOSE 4321
+EXPOSE 80
 CMD [ "/app/pdj-rp-skeleton" ]
 
