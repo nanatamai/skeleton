@@ -21,6 +21,9 @@
 #bottom_nav .nav li a:hover, #bottom_nav .nav li a:focus {
     background-color: #6da31b;
 }
+#bottom_nav .nav .active a {
+    background-color: #6da31b;
+}
 
 @media (max-width: 991px) {
   #bottom_nav .nav  {
