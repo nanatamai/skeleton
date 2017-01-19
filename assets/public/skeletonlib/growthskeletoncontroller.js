@@ -439,7 +439,7 @@ GrowthSkeletonController.prototype = {
             thisInstance.draw($(skeleton_box), marge_option, this);
 
             $(skeleton_box).find(".SkeletonCanvasMap").
-                append("<a href=\"" + thisInstance.apiReportUrl + "?skeleton_id=" + marge_option.skeleton_id + "&skeleton_data_id=" + marge_option.data.join(",") +  " target=\"_blank\">レポート表示</a>")
+                append("<a href=\"" + thisInstance.apiReportUrl + "?skeleton_id=" + marge_option.skeleton_id + "&skeleton_data_id=" + marge_option.data.join(",") +  "\" target=\"_blank\">レポート表示</a>")
 
             $(skeleton_box).removeData("skeletonid");
             $(skeleton_box).removeData("skeletondataid");
