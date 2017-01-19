@@ -226,7 +226,7 @@ th {
 }
 
 #skeleton_list .user-name  {
-  height: 300px;
+  height: 320px;
   position: relative;
   background-image: url("css_images/user_icon.png");
   background-repeat: no-repeat;
@@ -282,6 +282,7 @@ th {
 
 #skeleton_carousel .skeleton-box {
   width: auto;
+  height: 320px;
   padding-left: 60px;
 }
 
@@ -307,6 +308,12 @@ th {
     margin: 0 0 0 0;
 }
 
+#skeleton_carousel .SkeletonCanvasMap a {
+    width: 100%;
+    text-align: center;
+    display: block;
+}
+
 #skeleton_carousel .skeleton-box.none {
   background-image: url("css_images/nodata_icon.png");
   background-repeat: no-repeat;
@@ -315,7 +322,7 @@ th {
 
 #skeleton_carousel figcaption {
   font-size: 15px;
-  padding: 15px 0 15px 0;
+  padding: 15px 0 5px 0;
   text-align: center;
   color: #848282;
 }

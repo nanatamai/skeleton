@@ -69,7 +69,8 @@
 // コンストラクタ
 function GrowthSkeletonController(options) {
 
-    this.apiUrl = ""
+    this.apiUrl = "";
+    this.apiReportUrl = "";
     this.baseFile = "";
     this.commentFile = "comment.json.js";
     this.commentLinkFile = "index.html";
@@ -81,6 +82,7 @@ function GrowthSkeletonController(options) {
     this.setInstanceValiable(options, "commentLinkFile");
     this.setInstanceValiable(options, "histories");
     this.setInstanceValiable(options, "apiUrl");
+    this.setInstanceValiable(options, "apiReportUrl");
 
     this.defaultOptions = $.extend(true, {
         "configFile": "config.json",
@@ -273,10 +275,14 @@ GrowthSkeletonController.prototype = {
 //        var $users_div = $($selector.find("#skeleton_list"));
         var $carousel_div = $("<div class=\"carousel-box slider\">").appendTo($carousel);
 
+        if(data_json["result"].length > 0) {
+            $("#ttl_first").text(data_json["result"][0]["group_name"] + "グループの生育バランスの比較");
+        }
+
         // ユーザー情報を表示
         $.each(data_json["result"], function(i, val) {
             $user_div = $("<div class=\"user-name\">").appendTo($users_div);
-            $user_div.html("<span>" + val.skeleton_name + "</span>");
+            $user_div.html("<span>" + val.user_name + "<br>" + val.skeleton_name + "</span>");
         });
 
         // カルーセル作成
@@ -431,6 +437,9 @@ GrowthSkeletonController.prototype = {
             });
 
             thisInstance.draw($(skeleton_box), marge_option, this);
+
+            $(skeleton_box).find(".SkeletonCanvasMap").
+                append("<a href=\"" + thisInstance.apiReportUrl + "?skeleton_id=" + marge_option.skeleton_id + "&skeleton_data_id=" + marge_option.data.join(",") +  " target=\"_blank\">レポート表示</a>")
 
             $(skeleton_box).removeData("skeletonid");
             $(skeleton_box).removeData("skeletondataid");

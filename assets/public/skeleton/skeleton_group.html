@@ -40,10 +40,6 @@
         <style type="text/css">
         <!--
 
-            .skeleton-box {
-                width: 250px;
-                height: 300px;
-            }
 
             .slider {
                 width: 80%;
@@ -88,6 +84,7 @@
                     // デフォルト設定
                     var skeleton = new GrowthSkeletonController({
                         "apiUrl": "http://skdemo.aoidn.com:1234/api/skeleton_data_meta",
+                        "apiReportUrl": "/skeleton/skeleton_multi.html",
                         "configFile": "config.json",
                         "size": { "width": 180, "height": 225 },
                         "canvasSave": true,    // デバッグ用、canvas保存ボタンを表示
