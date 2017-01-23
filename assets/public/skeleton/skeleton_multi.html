@@ -50,25 +50,20 @@
         // デフォルト設定
         var skeleton = new GrowthSkeletonController({
             "apiUrl": "http://skdemo.aoidn.com:1234/api/skeleton_data_meta",
-//            "configFile": "config.json",
-//            "commentFile": "comment.json.js",
-//            "commentLinkFile": "index.html",
             "size": { "width": 270, "height": 310 },
-//            "canvasSave": true,    // デバッグ用、canvas保存ボタンを表示
-//            "skeleton_id": 19,
         });
 
         var url_param = skeleton.getUrlParams();
 
         skeleton.setDefaultOption({
           "skeleton_id": url_param["skeleton_id"],
+          "data": url_param["skeleton_data_id"].split(","),
         });
 
         skeletonDraw = function() {
           // 生育状態の推移1
           skeleton.draw($("#history1"), {
             "size": { "width": 190, "height": 219 },
-            "data": url_param["skeleton_data_id"].split(","),
             "baseFileFlag": true,
             "commentFlag": true,
             "useIdealFlag": true,
@@ -76,21 +71,18 @@
           // 生育状態の推移2
           skeleton.draw($("#history2"), {
             "size": { "width": 190, "height": 219 },
-            "data": url_param["skeleton_data_id"].split(","),
             "date_move": [-1],
             "historieFlag": true,
           });
           // 生育状態の推移3
           skeleton.draw($("#history3"), {
             "size": { "width": 190, "height": 219 },
-            "data": url_param["skeleton_data_id"].split(","),
             "date_move": [-2],
             "historieFlag": true,
           });
           // 生育状態の推移4
           skeleton.draw($("#history4"), {
             "size": { "width": 190, "height": 219 },
-            "data": url_param["skeleton_data_id"].split(","),
             "date_move": [-3],
             "historieFlag": true,
           });
@@ -104,14 +96,14 @@
           // 先週との比較
           skeleton.draw($("#lastweek"), {
             "titleAppend": "先週の生育状態との比較",
-            "data": url_param["skeleton_data_id"].split(","),
+//            "data": url_param["skeleton_data_id"].split(","),
             "overlay": url_param["skeleton_data_id"].split(","),
             "overlay_date_move": [-1],
           });
           // これまでとの比較
           skeleton.draw($("#skeleton02"), {
             "titleAppend": "これまでの生育状態との比較",
-            "data": url_param["skeleton_data_id"].split(","),
+//            "data": url_param["skeleton_data_id"].split(","),
             "overlay": url_param["skeleton_data_id"].split(","),
             "overlay_date_move": [-1, -2, -3],
           });

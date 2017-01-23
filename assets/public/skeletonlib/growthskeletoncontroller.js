@@ -5,11 +5,6 @@
     // ページ読み込み時の処理
     $(function () {
 
-//        if(!oidc.AccessTokenCheck()){
-//            window.location.href = "/";
-//            return;
-//        }
-
         // cookieをJSONとして扱う
         $.cookie.json = true;
 
@@ -71,23 +66,16 @@ function GrowthSkeletonController(options) {
 
     this.apiUrl = "";
     this.apiReportUrl = "";
-    this.baseFile = "";
-    this.commentFile = "comment.json.js";
-    this.commentLinkFile = "index.html";
-    this.histories = [];
+//    this.baseFile = "";
 
     // コンストラクタのみ有効
-    this.setInstanceValiable(options, "baseFile");
-    this.setInstanceValiable(options, "commentFile");
-    this.setInstanceValiable(options, "commentLinkFile");
-    this.setInstanceValiable(options, "histories");
+//    this.setInstanceValiable(options, "baseFile");
     this.setInstanceValiable(options, "apiUrl");
     this.setInstanceValiable(options, "apiReportUrl");
 
     this.defaultOptions = $.extend(true, {
         "configFile": "config.json",
-        "config": {},
-//        "baseFile": "",
+        "config": null,
         "size": { "width": 300, "height": 350 },
         "title": "",
         "titleAppend": "",
@@ -132,125 +120,141 @@ GrowthSkeletonController.prototype = {
 
         this.defaultOptions = $.extend(true, this.defaultOptions, options);
     },
-    // オプション設定
-    set: function (selector, options) {
-
-        this.optionsList.push($.extend(true, $.extend(true, { "selector": selector }, this.defaultOptions), options));
-    },
     // 描画
-    draw_old: function () {
-
-        // 読み込みキャッシュの無効化
-        $.ajaxSetup({
-            cache: false,
-            beforeSend: function(jqXHR, settings) {
-                jqXHR.url = settings.url;
-            }
-        });
-
-        // JSON Schemaの読み出し
-        this.loadJsonSchema();
-    },
     draw: function (selector, options) {
 
 //        var thisInstance = this;
 
         marge_option = $.extend(true, $.extend(true, { "selector": selector }, this.defaultOptions), options);
 
+        // コンフィグファイルロード済みか
+        if(this.defaultOptions.configFile == marge_option.configFile) {
 
-        $.ajaxSetup({async: false});//同期通信(json取ってくるまで待つ)
-//        $.getJSON(marge_option.configFile, function(data){
-//            marge_option.config = data;
-//        });
-//        $.ajaxSetup({async: true});
+            if(this.defaultOptions.config) {
 
+                marge_option.config = $.extend(true, {}, this.defaultOptions.config);
 
-
-        $.ajax({
-            url: marge_option.configFile,
-            dataType:'json',
-            context: this,
-        }).done(function(data) {
-//            var thisInstance = this;
-
-            marge_option.config = data;
-
-            // 理想個体を使用するか
-            var api_url = "";
-            if(marge_option.useSkeletonIdeal) {
-                if(this.ideal.length > 0) {
-                    api_url = this.apiUrl + "/" + this.ideal.join(",") + "/" + 0 + "?scope=skeleton." + marge_option.skeleton_id + ".read";
-                } else {
-                    return false;
-                }
+                this.loadJsonData(this, marge_option);
             } else {
-                api_url = this.apiUrl + "/" + marge_option.data.join(",") + "/" + marge_option.date_move.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+
+                this.loadConfigData(marge_option);
             }
             
-
-            oidc.GetApiJson(api_url, function(data_json, thisInstance){
-
-                $.each(data_json["result"], function(i, val) {
-
-                    var parseData = JSON.parse(val["assay_data"]);
-
-                    // コメント用データ作成
-                    marge_option.comment.commentText = parseData["comment"];
-                    marge_option.comment.commentDate = val["assay_date"];
-                    marge_option.comment.url = location.pathname + "?skeleton_id=" + marge_option.skeleton_id + "&skeleton_data_id=" + val["id"];
-
-                    // 理想個体使用フラグ
-                    if(marge_option.useIdealFlag) {
-                        thisInstance.ideal = parseData["ideal_id"].split(",");
-                    }
-
-                    thisInstance.inquiryItemsArray2Hash(parseData, val);
-
-                    Array.prototype.push.apply(marge_option.dataJson, parseData["assay_array"]);
-                });
-                
-                // overlay
-                if(marge_option.overlay.length > 0 || marge_option.useOverlayIdeal) {
-
-                    var overlay_url = "";
-                    if(marge_option.useOverlayIdeal) {
-                        overlay_url = thisInstance.apiUrl + "/" + thisInstance.ideal.join(",") + "/" + 0 + "?scope=skeleton." + marge_option.skeleton_id + ".read";
-                    } else {
-                        overlay_url = thisInstance.apiUrl + "/" + marge_option.overlay.join(",") + "/" + marge_option.overlay_date_move.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
-                    }
-
-                    oidc.GetApiJson(overlay_url, function(overlay_json, thisInstance){
-
-                        $.each(overlay_json["result"], function(i, val) {
-
-                            var parseData = JSON.parse(val["assay_data"]);
-
-                            thisInstance.inquiryItemsArray2Hash(parseData, val);
-
-                            Array.prototype.push.apply(marge_option.overlayJson, parseData["assay_array"]);
-                        });
-
-                        if(marge_option.dataJson.length || marge_option.overlayJson) {
-                            thisInstance.loadJsonComplete(marge_option);
-                        }
-                    }, thisInstance);
-                } else {
-
-                    if(marge_option.dataJson.length) {
-                        thisInstance.loadJsonComplete(marge_option);
-                    }
-                }
-
-                if(marge_option.dataJson.length || marge_option.overlayJson) {
-                    thisInstance.setToolTip(marge_option.selector);
-                }
-            }, this);
-            
-        }).fail(function(data) {
-//            alert('error!!!');
-        });
+        } else {
+            this.loadConfigData(marge_option);
+        }
         
     },
+    // configFileのロード
+    loadConfigData: function(option) {
+
+        $.ajax({
+            url: option.configFile,
+            dataType:'json',
+            context: {controller: this, option: option},
+        }).done(function(data) {
+
+            this.option.config = data;
+
+            this.controller.loadJsonData(this.controller, this.option);
+
+         }).fail(function(data) {
+//            alert('error!!!');
+        });
+    },
+    //
+    loadJsonData: function(controller, marge_option) {
+
+        // 理想個体を使用するか
+        var ideal_load = false;
+        var api_url = "";
+        if(marge_option.useSkeletonIdeal) {
+            if(controller.ideal.length > 0) {
+                api_url = controller.apiUrl + "/" + controller.ideal.join(",") + "/" + 0 + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+            } else {
+                api_url = controller.apiUrl + "/" + marge_option.data.join(",") + "/" + marge_option.date_move.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+                ideal_load = true;
+            }
+        } else {
+            api_url = controller.apiUrl + "/" + marge_option.data.join(",") + "/" + marge_option.date_move.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+        }
+        
+        
+
+        oidc.GetApiJson(api_url, function(data_json, thisInst){
+
+            var marge_option = thisInst.option;
+            var thisInstance = thisInst.controller;
+            var ideal_load2 = thisInst.ideal_load;
+
+            for(val of data_json["result"]) {
+
+                var parseData = JSON.parse(val["assay_data"]);
+
+                // コメント用データ作成
+                marge_option.comment.commentText = parseData["comment"];
+                marge_option.comment.commentDate = val["assay_date"];
+                marge_option.comment.url = location.pathname + "?skeleton_id=" + marge_option.skeleton_id + "&skeleton_data_id=" + val["id"];
+
+                // 理想個体使用フラグ
+                if(marge_option.useIdealFlag || ideal_load2) {
+                    thisInstance.ideal = parseData["ideal_id"].split(",");
+                }
+
+                thisInstance.inquiryItemsArray2Hash(parseData, val);
+
+                if(!ideal_load2) {
+                    Array.prototype.push.apply(marge_option.dataJson, parseData["assay_array"]);
+                }
+            }
+            
+            // overlay
+            if(marge_option.overlay.length > 0 || marge_option.useOverlayIdeal || ideal_load2) {
+
+                var overlay_url = "";
+                if(marge_option.useOverlayIdeal || ideal_load2) {
+                    overlay_url = thisInstance.apiUrl + "/" + thisInstance.ideal.join(",") + "/" + 0 + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+                } else {
+                    overlay_url = thisInstance.apiUrl + "/" + marge_option.overlay.join(",") + "/" + marge_option.overlay_date_move.join(",") + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+                }
+
+                oidc.GetApiJson(overlay_url, function(overlay_json, thisInst2){
+
+                    var marge_option = thisInst2.option;
+                    var thisInstance2 = thisInst2.controller;
+                    var ideal_load3 = thisInst2.ideal_load;
+
+                    for(val of overlay_json["result"]) {
+
+                        var parseData = JSON.parse(val["assay_data"]);
+
+                        thisInstance2.inquiryItemsArray2Hash(parseData, val);
+
+                        if(ideal_load3) {
+                            Array.prototype.push.apply(marge_option.dataJson, parseData["assay_array"]);
+                        } else {
+                            Array.prototype.push.apply(marge_option.overlayJson, parseData["assay_array"]);
+                        }
+                    }
+
+                    if(marge_option.dataJson.length || marge_option.overlayJson.length) {
+                        thisInstance2.loadJsonComplete(marge_option);
+                    }
+                }, thisInst);
+            } else {
+
+                if(marge_option.dataJson.length) {
+                    thisInstance.loadJsonComplete(marge_option);
+                }
+            }
+
+            if(marge_option.dataJson.length || marge_option.overlayJson.length) {
+                thisInstance.setToolTip(marge_option.selector);
+            }
+        }, {controller: controller, option: marge_option, ideal_load: ideal_load});
+
+    },
+
     groupDraw: function($list, $carousel, options) {
 
         marge_option = $.extend(true, { "selector": $carousel }, this.defaultOptions);
@@ -267,12 +271,6 @@ GrowthSkeletonController.prototype = {
     CreateUserList: function($users_div, $carousel, option, data_json) {
 
         var date_list = this.CreateGroupDateList(data_json);
-
-//        var $users_div = $("<div class=\"user-skeleton box-float\">").appendTo($selector);
-//        var $test_div = $("<div class=\"box-float\">").appendTo($selector);
-//        var $carousel_div = $("<div class=\"carousel-box\">").appendTo($test_div);
-
-//        var $users_div = $($selector.find("#skeleton_list"));
         var $carousel_div = $("<div class=\"carousel-box slider\">").appendTo($carousel);
 
         if(data_json["result"].length > 0) {
@@ -296,9 +294,7 @@ GrowthSkeletonController.prototype = {
                 } else {
                     $date_div.append("<div class=\"skeleton-box none\">" + "<span class=no_display>No Image</span>" + "</div>");
                 }
-                
             });
-            
         });
 
         this.SetCarousel($carousel_div, 4);
@@ -308,7 +304,6 @@ GrowthSkeletonController.prototype = {
     // カルーセル用日付リストを作成
     CreateGroupDateList: function(data_json) {
 
-//        var baseArray = new Array(data_json["result"].length);
         thisInstance = this;
         var date_list = [];
 
@@ -316,7 +311,7 @@ GrowthSkeletonController.prototype = {
             $.each(val["skeleton_data"], function(j, skeleton_data) {
 
                 var data_array = new Array(data_json["result"].length);
-                    data_array[i] = skeleton_data["id"];
+                data_array[i] = skeleton_data["id"];
                 var skeleton_array = new Array(data_json["result"].length);
                 skeleton_array[i] = val.skeleton_id;
                 
@@ -342,9 +337,6 @@ GrowthSkeletonController.prototype = {
                         skeleton_ids: skeleton_array,
                     });
                 }
-//                if(date_list.indexOf(skeleton_data["assay_date"]) < 0){
-//                    date_list.push(skeleton_data["assay_date"]);
-//                }
             });
         });
 
@@ -414,16 +406,6 @@ GrowthSkeletonController.prototype = {
 
             // スケルトン分繰り返し
             thisInstance.CarouselSkeletonDraw($(date_box), thisInstance)
-/*            $.each($(date_box).find("[data-skeletondataid]"), function(j, skeleton_box) {
-
-                var marge_option = $.extend(true, {
-                    skeleton_id: $(skeleton_box).data("skeletonid"),
-                    data: [$(skeleton_box).data("skeletondataid")],
-                }, thisInstance.defaultOptions);
-
-                thisInstance.draw($(skeleton_box), marge_option, this);
-            });
-*/
         });
     },
     // スケルトンの日付単位の描画
@@ -470,250 +452,7 @@ GrowthSkeletonController.prototype = {
             delete options[key];
         }
     },
-    // schemaを読み込む
-    loadJsonSchema: function() {
-
-        var jsonSchema = this.jsonSchema;
-        var thisInstance = this;
-
-        $.when(this.ajaxJsonpFunction("/skeletonlib/schema/dataSchema.min.js", "growthDataArraySchemaJson"),
-               this.ajaxJsonpFunction("/skeletonlib/schema/configSchema.min.js", "configSchemaJson"),
-               this.ajaxJsonpFunction("/skeletonlib/schema/commentSchema.min.js", "commentSchemaJson"))
-            .done(function (dataSchema, configSchema, commentSchema) {
-
-                jsonSchema.dataJson = dataSchema[2].responseJSON;
-                jsonSchema.config = configSchema[2].responseJSON;
-                jsonSchema.comment = commentSchema[2].responseJSON;
-
-                // dataを同期読み出し
-                thisInstance.loadJsonpData(0, 0);
-
-                // コメントを読み出し
-                thisInstance.loadJsonpComment(0);
-            })
-        .fail(function (jqXHR, statusText, errorThrown) {
-
-            var $error = $("<div class=\"error_msg\">").appendTo("#error_area");
-            $error.html(jqXHR.url + " ファイルを開けませんでした。<br />" + statusText);
-        });
-
-        return;
-    },
-    ajaxJsonpFunction: function(url, callback) {
-
-        return $.ajax({
-            type: 'GET',
-            url: url,
-            dataType: 'jsonp',
-            jsonpCallback: callback,
-        });
-    },
-    // 読み込み
-    loadJsonpData: function (optionsIndex, dataIndex) {
-
-        var jsonPath = this.loadDataName(optionsIndex, dataIndex);
-        var thisInstance = this;
-
-        if (Object.keys(jsonPath).length == 0) {
-
-            // 描画処理の開始
-            this.loadJsonComplete(this.optionsList[optionsIndex]);
-
-            // オプションを進める
-            optionsIndex++;
-            dataIndex = 0;
-
-            // 再取得
-            jsonPath = this.loadDataName(optionsIndex, dataIndex);
-
-            if (Object.keys(jsonPath).length == 0) {
-
-                // 基本データを設定
-                this.setBaseData();
-
-                // tooltipを紐付け
-                this.setToolTip();
-                return;
-            }
-        }
-
-        $.ajax({
-            type: 'GET',
-            url: jsonPath["path"],
-            dataType: 'jsonp',
-            jsonpCallback: jsonPath["callback"],
-
-        })
-        .done(function (json) {
-
-            // JSONの保持
-            if (thisInstance.setJsonData(json, jsonPath["path"], optionsIndex, dataIndex, thisInstance.jsonSchema)) {
-
-                // 再起呼び出し
-                thisInstance.loadJsonpData(optionsIndex, dataIndex + 1);
-            }
-        })
-        .fail(function (jqXHR, statusText, errorThrown) {
-
-            var $error = $("<div class=\"error_msg\">").appendTo("#error_area");
-            $error.html(jqXHR.url + " ファイルを開けませんでした。<br />" + statusText);
-        });;
-    },
-    // 読み込み対象ファイル名
-    loadDataName: function (optionsIndex, dataIndex) {
-
-        var jsonPath = {};
-
-        if (this.optionsList.length > optionsIndex) {
-            if (this.optionsList[optionsIndex].data.length > dataIndex) {
-
-                jsonPath["path"] = this.optionsList[optionsIndex].data[dataIndex];
-                jsonPath["callback"] = "dataJson";
-            } else if (this.optionsList[optionsIndex].overlay.length > (dataIndex - this.optionsList[optionsIndex].data.length)) {
-
-                jsonPath["path"] = this.optionsList[optionsIndex].overlay[(dataIndex - this.optionsList[optionsIndex].data.length)];
-                jsonPath["callback"] = "dataJson";
-            } else if (this.optionsList[optionsIndex].data.length + this.optionsList[optionsIndex].overlay.length == dataIndex) {
-
-                jsonPath["path"] = this.optionsList[optionsIndex].configFile;
-                jsonPath["callback"] = "configJson";
-            }
-        }
-
-        return jsonPath;
-    },
-    // 読み込んだJSONの保存
-    setJsonData: function (json, jsonName, optionsIndex, dataIndex, jsonSchema) {
-
-        var ret = false;
-
-        if (this.optionsList[optionsIndex].data.length > dataIndex) {
-
-            if (this.validateJson(jsonName, json, jsonSchema.dataJson)) {
-
-                Array.prototype.push.apply(this.optionsList[optionsIndex].dataJson, json.inquiryItems);
-                this.baseFileJuge(jsonName, json);
-                ret = true;
-            }
-        } else if (this.optionsList[optionsIndex].overlay.length > (dataIndex - this.optionsList[optionsIndex].data.length)) {
-
-            if (this.validateJson(jsonName, json, jsonSchema.dataJson)) {
-
-                Array.prototype.push.apply(this.optionsList[optionsIndex].overlayJson, json.inquiryItems);
-                this.baseFileJuge(jsonName, json);
-                ret = true;
-            }
-        } else if (this.optionsList[optionsIndex].data.length + this.optionsList[optionsIndex].overlay.length == dataIndex) {
-
-            if (this.validateJson(jsonName, json, jsonSchema.config)) {
-
-                var colorDefault = $.extend(true, {
-                    "config": {
-                        "drawColor": {
-                            "skeleton": {
-                                "base": "rgb(0, 100, 0)",
-                                "baseOver": "rgb(230, 82, 38)",
-                                "baseUnder": "rgb(128, 0, 128)",
-                                "elongation": "rgb(255, 165, 0)",
-                                "warningOver": "rgb(255, 0, 0)",
-                                "warningUnder": "rgb(0, 0, 255)"
-                            },
-                            "overlay": {
-                                "base": "rgba(165, 165, 165, 0.6)",
-                                "elongation": "rgba(165, 165, 165, 0.6)"
-                            }
-                        }
-                    }
-                }, json);
-
-                this.optionsList[optionsIndex]["config"] = $.extend(true, colorDefault, this.optionsList[optionsIndex]["config"]);
-                ret = true;
-            }
-        }
-
-        return ret;
-    },
-    // ファイル名をbaseFileと比較
-    baseFileJuge: function (jsonName, dataJson) {
-
-        if (this.baseData && Object.keys(this.baseData).length) {
-            return;
-        }
-
-        if (this.baseFile == jsonName) {
-
-            this.inquiryItemsArray2Hash(dataJson.inquiryItems);
-
-            this.baseData = dataJson.inquiryItems[0];
-        }
-    },
-    loadBaseFile: function () {
-
-        var thisInstance = this;
-
-        api_url = thisInstance.apiUrl + "/" + this.baseFile + "/0?scope=skeleton." + marge_option.skeleton_id + ".read";
-
-        oidc.GetApiJson(api_url, function(data_json){
-
-            $.each(data_json["result"], function(i, val) {
-
-                var parseData = JSON.parse(val["assay_data"]);
-
-                thisInstance.inquiryItemsArray2Hash(parseData, val);
-
-                this.baseData = parseData["assay_array"][0];
-
-                thisInstance.insertBaseData(this.baseData);
-                return false;
-            });
-        });
-    },
-/*
-    // 読み込んだDataJsonの配列を連想配列に変換する
-    inquiryItemsArray2Hash: function(dataJson) {
-
-        for (var i = 0; i < dataJson.length; i++) {
-
-            var coeff = 1;
-
-            // 21個目は単位（無い場合、mm）
-            if (dataJson[i].length == 21) {
-
-                if (dataJson[i][20] == "cm") {
-                    coeff = 10;
-                }
-            }
-
-            dataJson[i] = {
-                "leafAreaCoefficient": dataJson[i][7],
-                "stemElongation": dataJson[i][8] * coeff,
-                "stemCircumference": dataJson[i][9] * coeff,
-                "topDistance": dataJson[i][10] * coeff,
-                "topNumberLeaves": dataJson[i][11],
-                "numberLeaves": dataJson[i][12],
-                "upperLeafArea": {
-                    "verticalWidth": dataJson[i][13] * coeff,
-                    "breadth": dataJson[i][14] * coeff
-                },
-                "mediumLeafArea": {
-                    "verticalWidth": dataJson[i][15] * coeff,
-                    "breadth": dataJson[i][16] * coeff
-
-                },
-                "lowerLeafArea": {
-                    "verticalWidth": dataJson[i][17] * coeff,
-                    "breadth": dataJson[i][18] * coeff
-                },
-                "growingCondition": dataJson[i][19],
-
-                "dataId": dataJson[i][0],
-                "plantingDate":  dataJson[i][2],
-                "measurementDate":  dataJson[i][4],
-                "cultivationDensity":  dataJson[i][3],
-            };
-        }
-    },
-*/
+    // 
     inquiryItemsArray2Hash: function(dataJson, baseJson) {
 
         for (var i = 0; i < dataJson["assay_array"].length; i++) {
@@ -760,26 +499,6 @@ GrowthSkeletonController.prototype = {
             };
         }
     },
-    // 読み込みJSONのvalidation
-    validateJson: function(jsonName, json, schema) {
-
-        var validate = jsen(schema);
-        var valid = validate(json);
-
-        if (valid) {
-            return true;
-        } else {
-
-            var $error = $("<div class=\"error_msg\">").appendTo("#error_area");
-            $error.html(jsonName + "の内容が正しくありません。<br />");
-
-            $.each(validate.errors, function (index, val) {
-                $error.append("path : " + val.path + "　　keyword : " + val.keyword + "<br />");
-            });
-
-            return false;
-        }
-    },
     // 内部処理はミリ単位
     configJsonUnitConversion: function (configJson) {
 
@@ -791,10 +510,6 @@ GrowthSkeletonController.prototype = {
     },
     // Jsonロード完了後処理
     loadJsonComplete: function (option) {
-
-        // 配列を連想配列へ変換
-//        this.inquiryItemsArray2Hash(option.dataJson);
-//        this.inquiryItemsArray2Hash(option.overlayJson);
 
         // 計算メソッドを追加
         this.inquiryItemsAddMethod(option.dataJson);
@@ -1144,44 +859,6 @@ GrowthSkeletonController.prototype = {
         }
         return ret;
     },
-    // 基本データ設定
-    setBaseData: function() {
-
-        // 基本データを取得
-
-        if (this.baseData && Object.keys(this.baseData).length) {
-            this.insertBaseData(this.baseData);
-        } else {
-            this.loadBaseData(this.baseFile);
-        }
-    },
-    // 基本データの読み込み
-    loadBaseData: function (baseFile) {
-
-        var thisInstance = this;
-
-        $.ajax({
-            type: 'GET',
-            url: baseFile,
-            dataType: 'jsonp',
-            jsonpCallback: "dataJson",
-
-        })
-        .done(function (json) {
-
-            // JSONの検査
-            if (thisInstance.validateJson(baseFile, json, thisInstance.jsonSchema.dataJson)) {
-
-                thisInstance.inquiryItemsArray2Hash(json.inquiryItems);
-                thisInstance.insertBaseData(json.inquiryItems[0]);
-            }
-        })
-        .fail(function (jqXHR, statusText, errorThrown) {
-
-            var $error = $("<div class=\"error_msg\">").appendTo("#error_area");
-            $error.html(jqXHR.url + " ファイルを開けませんでした。<br />" + statusText);
-        });;
-    },
     // 基本データを設定
     insertBaseData: function (baseData) {
 
@@ -1196,50 +873,6 @@ GrowthSkeletonController.prototype = {
             $(".measurement_date").text("計測日：" + measurDate[0] + "年" + measurDate[1] + "月" + measurDate[2] + "日");
         }
 
-    },
-    // コメント読み込み
-    loadJsonpComment: function (commentIndex) {
-
-        var jsonPath = this.commentFile;
-        var thisInstance = this;
-
-        if (this.histories.length < commentIndex) {
-
-            // end
-            return;
-        }
-
-        if (commentIndex) {
-
-            // 過去のディレクトリのコメントを設定
-            jsonPath = this.histories[commentIndex - 1] + (this.histories[commentIndex - 1].slice(-1) == "/" ? "" : "/") + this.commentFile;
-        }
-
-
-        $.ajax({
-            type: 'GET',
-            url: jsonPath,
-            dataType: 'jsonp',
-            jsonpCallback: "commentJson",
-
-        })
-        .done(function (json) {
-
-            // JSONの検査
-            if (thisInstance.validateJson(jsonPath, json, thisInstance.jsonSchema.comment)) {
-
-
-//                thisInstance.addCommentHtml(json, commentIndex, thisInstance.histories[commentIndex - 1]);
-
-                // 再起呼び出し
-                thisInstance.loadJsonpComment(commentIndex + 1);
-            }
-        })
-        .fail(function (jqXHR, statusText, errorThrown) {
-
-            var $error = $("<div class=\"error_msg\">").appendTo("#error_area");
-            $error.html(jqXHR.url + " ファイルを開けませんでした。<br />" + statusText);
-        });;
     },
     // コメントを追加
     addCommentHtml: function (json, commentIndex) {
