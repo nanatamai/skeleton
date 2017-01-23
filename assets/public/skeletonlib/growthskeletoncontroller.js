@@ -519,7 +519,7 @@ GrowthSkeletonController.prototype = {
         this.configJsonUnitConversion(option.config)
 
         if(option.baseFileFlag) {
-            this.insertBaseData(option.dataJson[0]);
+            this.insertBaseData(option, option.dataJson[0]);
         }
         if(option.commentFlag) {
             this.addCommentHtml(option.comment, 0);
@@ -860,7 +860,7 @@ GrowthSkeletonController.prototype = {
         return ret;
     },
     // 基本データを設定
-    insertBaseData: function (baseData) {
+    insertBaseData: function (option, baseData) {
 
         //
         if (baseData || Object.keys(this.baseData).length) {
@@ -872,6 +872,23 @@ GrowthSkeletonController.prototype = {
             $(".cultivation_density").html("栽植密度：" + baseData["cultivationDensity"].toFixed(1) + "株/m<sup>2</sup>");
             $(".measurement_date").text("計測日：" + measurDate[0] + "年" + measurDate[1] + "月" + measurDate[2] + "日");
         }
+
+        // スケルトン名の読み込み
+
+        var api_url = option.apiSkeletonUrl + "/" + option.skeleton_id + "?scope=skeleton." + marge_option.skeleton_id + ".read";
+
+        oidc.GetApiJson(api_url, function(data_json, thisInst){
+
+            var marge_option = thisInst.option;
+            var thisInstance = thisInst.controller;
+
+            if("skeleton_name" in data_json["result"]) {
+
+                $("#main div > h1").text(data_json["result"].skeleton_name);
+                $("#breadcrumb_box li.active").text(data_json["result"].skeleton_name);
+            }
+        }, {controller: this, option: option});
+
 
     },
     // コメントを追加
