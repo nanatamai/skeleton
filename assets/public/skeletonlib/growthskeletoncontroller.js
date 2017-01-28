@@ -411,23 +411,30 @@ GrowthSkeletonController.prototype = {
     // スケルトンの日付単位の描画
     CarouselSkeletonDraw: function($date_box, thisInstance) {
 
-        $.each($date_box.find("[data-skeletondataid]"), function(j, skeleton_box) {
+        var skeleton_boxs = $date_box.find("[data-skeletondataid]");
+
+        for(skeleton_box of skeleton_boxs) {
+//        $.each($date_box.find("[data-skeletondataid]"), function(j, skeleton_box) {
 
             var marge_option = $.extend(true, thisInstance.defaultOptions, {
                 skeleton_id: $(skeleton_box).data("skeletonid"),
                 data: [$(skeleton_box).data("skeletondataid")],
             });
 
+//            console.log($(skeleton_box).find(".SkeletonCanvasMap"));
+
             thisInstance.draw($(skeleton_box), marge_option, this);
 
-            $(skeleton_box).find(".SkeletonCanvasMap").
-                append("<a href=\"" + thisInstance.apiReportUrl + "?skeleton_id=" + marge_option.skeleton_id + "&skeleton_data_id=" + marge_option.data.join(",") +  "\" target=\"_blank\">レポート表示</a>")
+//            var testbox = $(skeleton_box).find(".SkeletonCanvasMap").append("<a href=\"" + thisInstance.apiReportUrl + "?skeleton_id=" + marge_option.skeleton_id + "&skeleton_data_id=" + marge_option.data.join(",") +  "\" target=\"_blank\">レポート表示</a>");
+
+//            console.log($(skeleton_box).find(".SkeletonCanvasMap"));
 
             $(skeleton_box).removeData("skeletonid");
             $(skeleton_box).removeData("skeletondataid");
             $(skeleton_box).removeAttr("data-skeletonid");
             $(skeleton_box).removeAttr("data-skeletondataid");
-        });
+//        });
+        }
 
     },
     getUrlParams: function() {
@@ -548,6 +555,8 @@ GrowthSkeletonController.prototype = {
 
         // キャプションを設定
         option.selector.find("figcaption").text(title);
+
+        option.selector.find(".SkeletonCanvasMap").append("<a href=\"" + thisInstance.apiReportUrl + "?skeleton_id=" + marge_option.skeleton_id + "&skeleton_data_id=" + marge_option.data.join(",") +  "\" target=\"_blank\">レポート表示</a>");
 
         // 表へ値を設定
         var tableInfo = option.selector.find(".growth-table-area");
