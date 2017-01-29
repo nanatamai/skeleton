@@ -98,6 +98,7 @@ function GrowthSkeletonController(options) {
         "useIdealFlag": false,
         "useSkeletonIdeal": false,
         "useOverlayIdeal": false,
+        "group": false,
 
         // for debug
         "canvasSave": false,
@@ -257,7 +258,8 @@ GrowthSkeletonController.prototype = {
 
     groupDraw: function($list, $carousel, options) {
 
-        marge_option = $.extend(true, { "selector": $carousel }, this.defaultOptions);
+        marge_option = $.extend(true, { "selector": $carousel}, this.defaultOptions);
+        this.defaultOptions.group = true;
 
         api_url = options.apiGroupUrl + "/" + options.group + "/skeletons?scope=group." + options.group + ".read";
 
@@ -556,7 +558,9 @@ GrowthSkeletonController.prototype = {
         // キャプションを設定
         option.selector.find("figcaption").text(title);
 
-        option.selector.find(".SkeletonCanvasMap").append("<a href=\"" + thisInstance.apiReportUrl + "?skeleton_id=" + marge_option.skeleton_id + "&skeleton_data_id=" + marge_option.data.join(",") +  "\" target=\"_blank\">レポート表示</a>");
+        if(option.group) {
+            option.selector.find(".SkeletonCanvasMap").append("<a href=\"" + this.apiReportUrl + "?skeleton_id=" + option.skeleton_id + "&skeleton_data_id=" + option.data.join(",") +  "\" target=\"_blank\">レポート表示</a>");
+        }
 
         // 表へ値を設定
         var tableInfo = option.selector.find(".growth-table-area");
